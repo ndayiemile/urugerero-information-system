@@ -251,7 +251,7 @@ body {
 .activity-details .location::before {
   border: medium solid lightblue;
 }
-.activity-details .doers::before{
+.activity-details .participant::before{
   content: "";
   width: 5px;
   height: 5px;
@@ -272,6 +272,9 @@ body {
   -webkit-appearance: none;
   -moz-appearance: none;
   background-image: none;
+}
+.hoverable:hover{
+ cursor: pointer;
 }
 .table>:not(caption)>*>* {
   padding-left: 0 !important;

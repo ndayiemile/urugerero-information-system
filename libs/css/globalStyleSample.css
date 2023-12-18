@@ -239,7 +239,7 @@ body {
 .activity-details .location::before {
   border: medium solid lightblue;
 }
-.activity-details .doers::before{
+.activity-details .participant::before{
   content: "";
   width: 5px;
   height: 5px;
