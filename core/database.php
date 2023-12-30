@@ -116,6 +116,7 @@ class Database
 
                 //creates insertFields query
                 $fields = "";
+                $fields .= "cohortId, ";
                 for ($i = 0; $i < count($fieldNames); $i++) {
                     if ($firstColumnIsIdentifier && $i == 0) {
                         continue;
@@ -131,6 +132,9 @@ class Database
                     //checks whether the first column is for id
                     $firstColumnIsIdentifier = is_numeric(number_format($fieldValues[0][0]));
                     $valueNames = "";
+                    //append the cohort identifier
+                    $valueNames .= ":cohortId$j, ";
+                    $bindsSet["cohortId$j"] = $_SESSION['cohortId'];
                     //loops through the data rows and creates query parts
                     for ($i = 0; $i < count($fieldNames); $i++) {
                         //skips the first column, assuming it to be an identifier column
@@ -172,8 +176,12 @@ class Database
         }
         // saves text input fields values from the form to the database
         else {
-            $columns = "";
-            $prepColumns = "";
+            //file upload identifier
+            if (isset($arguments["files"])) {
+                unset($arguments["files"]);
+            }
+            $columns = "cohortId, ";
+            $prepColumns = ":cohortId, ";
             // create string parts from passed parameters
             foreach ($arguments as $name => $value) {
                 $columns .= $name . ", ";
@@ -185,7 +193,9 @@ class Database
             // creates the query
             $queryString = "INSERT INTO " . $table . "(" . $columns . ")" . " VALUES (" . "$prepColumns" . ")";
             $this->query($queryString);
-            //bind the values to the query
+            // append the cohort identifier
+            $this->bind(":cohortId", $_SESSION['cohortId']);
+            // bind the values to the query
             foreach ($arguments as $name => $value) {
                 $this->bind(":" . $name, $value);
             }

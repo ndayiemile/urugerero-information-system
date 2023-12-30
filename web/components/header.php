@@ -150,7 +150,7 @@ require_once '../../core/App.php';
     </nav>
   </header>
   <!-- main -->
-  <main class="px-3">
+  <main class="position-relative px-3">
     <!-- top navbar -->
     <nav class="navbar navbar-expand-lg bg-white rounded py-1 mt-2">
       <div class="container-fluid p-1">

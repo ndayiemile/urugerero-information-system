@@ -11,96 +11,78 @@ class LinksAndScripts
     private $globalFootScripts = [];
     private $headLinksAndScripts = [];
     private $footLinksAndScripts = [];
-    public function __construct()
+    private $linksAndScriptsBaseDirectory = "../../libs/";
+
+    public function __construct($view)
     {
         $this->globalHeadLinks = [
-            '<!-- bootstrap styleSheets -->
-            <link rel="stylesheet" href="../../libs/bootstrap-5.3.2-dist/css/bootstrap.min.css" />',
-            '<!-- local globalStylesheet -->
-            <link rel="stylesheet" href="../../libs/css/globalStyle.css" />',
+            $this->css("bootstrap.min", true, "bootstrap-5.3.2-dist/css/"),
+            $this->css("global"),
         ];
-        $this->globalHeadScripts = [
-            '<!-- bootstrap scripts -->
-            <script type="text/javascript" src="../../libs/bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js" defer></script>',
-            '<!-- utilities -->
-            <script type="text/javascript" src="../../libs/js/utils.js" defer></script>',
-            '<!-- local globalScript -->
-            <script type="text/javascript" src="../../libs/js/globalScript.js" defer></script>',
+        $this->globalFootScripts = [
+            $this->js("bootstrap.bundle.min", true, "bootstrap-5.3.2-dist/js/"),
+            $this->js("utils"),
+            $this->js("global")
         ];
+
+        //get the view links and scripts using general access mechanism
+        /*Follows that the view,script,style and model has the same file names*/
+        $this->getViewDefaultLinksAndScripts($view);
     }
-    // $linksAndScripts function prototype
-    public function default(){
-        $this->headLinks = [];
-        $this->headScripts = [];
-        $this->footLinks = [];
-        $this->footScripts = [];
-        return $this->returnAll();
+
+    private function css($styleFile, bool $locallyHosted = true, $directory = "css/")
+    {
+        $src = $this->linksAndScriptsBaseDirectory . $directory . $styleFile . '.css';
+        if ($locallyHosted) {
+            if (file_exists($src)) {
+                return '<!-- ' . $styleFile . ' styleSheet -->
+                <link rel="stylesheet" href="' . $src . '"/>';
+            } else {
+                array_push($GLOBALS['errorMessages'], "could not find $this->linksAndScriptsBaseDirectory$directory$styleFile.css");
+            }
+        } else {
+            return '<!-- cloudSource styleSheet -->' . $styleFile;
+        }
     }
-    private function returnAll(){
+
+    private function js($scriptFile, bool $locallyHosted = true, $directory = "js/")
+    {
+        $src = $this->linksAndScriptsBaseDirectory . $directory . $scriptFile . ".js";
+        if ($locallyHosted) {
+            if (file_exists($src)) {
+                return '<!-- ' . $scriptFile . ' script --> 
+                <script type="text/javascript" src="' . $src . '"></script>';
+            } else {
+                array_push($GLOBALS['errorMessages'], "could not find $this->linksAndScriptsBaseDirectory$directory$scriptFile.js");
+            }
+        } else {
+            return '<!-- cloudSource script -->' . $scriptFile;
+        }
+    }
+
+    private function getViewDefaultLinksAndScripts($view)
+    {
+        array_push($this->headLinks, $this->css("$view"));
+        array_push($this->footScripts, $this->js("$view"));
+    }
+
+    public function default()
+    {
+        return $this->returnLinksAndScripts();
+    }
+
+    private function returnLinksAndScripts()
+    {
         // head Links and Scripts
-        $this->headLinksAndScripts = array_merge($this->globalHeadLinks,$this->headLinks,$this->globalHeadScripts,$this->headScripts,);
+        $this->headLinksAndScripts = array_merge($this->globalHeadLinks, $this->headLinks, $this->globalHeadScripts, $this->headScripts,);
         // foot links and styles
-        $this->footLinksAndScripts = array_merge($this->globalFootLinks,$this->footLinks,$this->globalFootScripts,$this->footScripts,);
-        return ["head"=>$this->headLinksAndScripts,"foot" =>$this->footLinksAndScripts];
+        $this->footLinksAndScripts = array_merge($this->globalFootLinks, $this->footLinks, $this->globalFootScripts, $this->footScripts,);
+        return ["head" => $this->headLinksAndScripts, "foot" => $this->footLinksAndScripts];
     }
+
     public function home()
     {
-        $this->headScripts = [
-            '<!-- home-page script -->
-            <script type="text/javascript" src="../../libs/js/indexScript.js" defer></script>',
-        ];
-        $this->footScripts = [
-            '<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>',
-        ];
-        return $this->returnAll();
-    }
-    public function reports(){
-        $this->headScripts = [
-            '<!-- reports-page script -->
-            <script type="text/javascript" src="../../libs/js/reportsScript.js" defer></script>',
-        ];
-        return $this->returnAll();    
-    }
-    public function intore()
-    {
-        $this->headLinks = [
-            '<link rel="stylesheet" href="../../libs/css/intoreStyle.css" />',
-        ];
-        $this->headScripts = [
-            '<!-- intore-page script -->
-            <script type="text/javascript" src="../../libs/js/intoreScript.js" defer></script>',
-        ];
-        return $this->returnAll();    
-    }
-    public function intoreRegister(){
-        $this->headScripts = [
-            '<!-- intore-page script -->
-            <script type="text/javascript" src="../../libs/js/intoreRegisterScript.js" defer></script>',
-        ];
-        return $this->returnAll(); 
-    }
-    public function intoreIdentities(){
-        $this->headLinks = [
-            '<link rel="stylesheet" href="../../libs/css/intoreIdentitiesStyle.css" />',
-        ];
-        $this->headScripts = [
-            '<!-- intoreIdentities-page script -->
-            <script type="text/javascript" src="../../libs/js/intoreIdentitiesScript.js" defer></script>',
-        ];
-        return $this->returnAll(); 
-    }
-    public function activities(){
-        $this->headScripts = [
-            '<!-- intore-page script -->
-            <script type="text/javascript" src="../../libs/js/activitiesScript.js" defer></script>',
-        ];
-        return $this->returnAll(); 
-    }
-    public function ActivitiesParticular(){
-        $this->headScripts = [
-            '<!-- intore-page script -->
-            <script type="text/javascript" src="../../libs/js/activitiesParticularScript.js" defer></script>',
-        ];
-        return $this->returnAll(); 
+        array_push($this->headScripts, $this->js('<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>', false));
+        return $this->returnLinksAndScripts();
     }
 }

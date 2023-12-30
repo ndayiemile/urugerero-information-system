@@ -14,8 +14,8 @@ try {
 <script>
   <?php
   // server internal errors
-  if(count($app->errorsMessages) != 0 && $app->debugMode == true){
-      echo "console.error(".json_encode($app->errorsMessages).")";
+  if(count($GLOBALS['errorMessages']) != 0 && $app->debugMode == true){
+      echo "console.error(".json_encode($GLOBALS['errorMessages']).")";
     }
   ?>
 </script>

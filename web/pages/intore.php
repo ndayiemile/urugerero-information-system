@@ -35,7 +35,7 @@ include_once('../components/header.php');
         <!-- number of available records -->
         <span class="me-3 ms-auto"><small>50</small> of <small>100</small></span>
         <button class="btn btn-sm btn-secondary" onclick="printPageArea('intoreIdentities-card')">Print</button>
-      </div> 
+      </div>
       <div id="currentStatusSortKeys" name="currentStatusSortKeys" targetField="currentStatus" class="sortKey p-0 bg-light-gray d-flex align-items-center justify-content-between">
       </div>
       <!-- intore container list-->
@@ -75,6 +75,7 @@ include_once('../components/header.php');
         </div>
       </div>
     </div>
+  </div>
 </section>
 <?php
 include_once('../components/footer.php')

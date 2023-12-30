@@ -204,10 +204,15 @@ body {
 .timeline {
   border-left: 2px solid hsl(0, 0%, 90%);
   max-height:655px;
-  overflow-y: auto;
 }
 .timeline::-webkit-scrollbar {
   display: none;
+}
+.scroll-x{
+  overflow-x: auto;
+}
+.scroll-y{
+  overflow-y: auto;
 }
 .timeline .timeline-item:after {
   position: absolute;

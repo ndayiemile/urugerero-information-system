@@ -146,7 +146,7 @@ include_once('../components/header.php')
                   </div>
                 </div>
                 <div class="card-body pb-0 ps-3 pe-0">
-                  <div class="timeline position-relative ps-2 pb-0">
+                  <div class="timeline scroll-y position-relative ps-2 pb-0">
                     <!-- done activities -->
                     <div
                       class="card timeline-item position-relative rounded mb-2 border shadow"
@@ -160,7 +160,7 @@ include_once('../components/header.php')
                       <div
                         class="timeline-activity card-body p-0 position-relative"
                         style="
-                          background-image: url(../../depository/pictures/Activities/WhatsApp\ Image\ 2023-10-19\ at\ 12.29.14.jpeg);
+                          background-image: url(../../depository/activities/WhatsApp\ Image\ 2023-10-19\ at\ 12.29.14.jpeg);
                         "
                       >
                         <div
@@ -189,7 +189,7 @@ include_once('../components/header.php')
                       <div
                         class="timeline-activity card-body p-0 position-relative"
                         style="
-                          background-image: url(../../depository/pictures/Activities/WhatsApp\ Image\ 2023-10-19\ at\ 12.29.14.jpeg);
+                          background-image: url(../../depository/activities/WhatsApp\ Image\ 2023-10-19\ at\ 12.29.14.jpeg);
                         "
                       >
                         <div
@@ -219,7 +219,7 @@ include_once('../components/header.php')
                       <div
                         class="timeline-activity card-body p-0 position-relative"
                         style="
-                          background-image: url(../../depository/pictures/Activities/WhatsApp\ Image\ 2023-10-19\ at\ 12.29.14.jpeg);
+                          background-image: url(../../depository/activities/WhatsApp\ Image\ 2023-10-19\ at\ 12.29.14.jpeg);
                         "
                       >
                         <div
@@ -248,7 +248,7 @@ include_once('../components/header.php')
                       <div
                         class="timeline-activity card-body p-0 position-relative"
                         style="
-                          background-image: url(../../depository/pictures/Activities/WhatsApp\ Image\ 2023-10-19\ at\ 12.29.14.jpeg);
+                          background-image: url(../../depository/activities/WhatsApp\ Image\ 2023-10-19\ at\ 12.29.14.jpeg);
                         "
                       >
                         <div
