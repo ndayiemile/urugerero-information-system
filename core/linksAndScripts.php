@@ -38,7 +38,7 @@ class LinksAndScripts
                 return '<!-- ' . $styleFile . ' styleSheet -->
                 <link rel="stylesheet" href="' . $src . '"/>';
             } else {
-                array_push($GLOBALS['errorMessages'], "could not find $this->linksAndScriptsBaseDirectory$directory$styleFile.css");
+                array_push($GLOBALS['debugger'], "could not find $this->linksAndScriptsBaseDirectory$directory$styleFile.css");
             }
         } else {
             return '<!-- cloudSource styleSheet -->' . $styleFile;
@@ -53,7 +53,7 @@ class LinksAndScripts
                 return '<!-- ' . $scriptFile . ' script --> 
                 <script type="text/javascript" src="' . $src . '"></script>';
             } else {
-                array_push($GLOBALS['errorMessages'], "could not find $this->linksAndScriptsBaseDirectory$directory$scriptFile.js");
+                array_push($GLOBALS['debugger'], "could not find $this->linksAndScriptsBaseDirectory$directory$scriptFile.js");
             }
         } else {
             return '<!-- cloudSource script -->' . $scriptFile;

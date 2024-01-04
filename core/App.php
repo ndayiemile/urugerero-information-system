@@ -1,5 +1,5 @@
 <?php
-$GLOBALS['errorMessages'] = [];
+$GLOBALS['debugger'] = [];
 class App
 {
     public $model;
@@ -10,12 +10,7 @@ class App
     public $parameters = [];
     public function __construct()
     {
-        // ajax test
-        // if (isset($_REQUEST['ajaxRequestIdentifier']) && ($_REQUEST['serverTargetFunction'] != null)) {
-        //     echo json_encode($_REQUEST);
-        //     unset($_REQUEST);
-        // }
-        // require the the set up classes
+        // required set up classes
         require_once 'config.php';
         require_once 'database.php';
         require_once 'sessions.php';
@@ -42,30 +37,43 @@ class App
                 try {
                     $response = call_user_func_array([$this->model, $this->method], $this->parameters);
                     if (!is_object($response) && !is_array($response)) {
-                        $response = array(
-                            "errorType" => "databaseError",
-                            "parametersPasses" => $this->parameters,
-                            "debug" => "database output is not json compatible",
-                            "trace" => "check the current modal output",
+                        array_push(
+                            $GLOBALS['debugger'],
+                            [
+                                "errorType" => "databaseError",
+                                "parametersPasses" => $this->parameters,
+                                "debug" => "database output is not json compatible",
+                                "trace" => "check the current modal output",
+                            ]
                         );
                     }
                 } catch (Throwable $th) {
-                    $response = array(
-                        "errorType" => "serverError",
-                        "errorMessage" => $th->getMessage(),
-                        "model" => $pageName,
-                        "parameters" => $this->parameters,
-                        "debug" => "the modal or function does not exits",
+                    array_push(
+                        $GLOBALS['debugger'],
+                        [
+                            "errorType" => "serverError",
+                            "errorMessage" => $th->getMessage(),
+                            "model" => $pageName,
+                            "parameters" => $this->parameters,
+                            "debug" => "the modal or function does not exits",
+                        ]
                     );
                 }
             }
             // handler in case no target function is set on client side
             else {
-                $response = array(
-                    "errorType" => "clientError",
-                    "errorMessage" => "The request does not contain the server target function",
-                    "model" => $pageName,
+                array_push(
+                    $GLOBALS['debugger'],
+                    [
+                        "errorType" => "clientError",
+                        "errorMessage" => "The request does not contain the server target function",
+                        "model" => $pageName,
+                    ]
                 );
+            }
+            /*AJAX_OUTPUT*/
+            if (count($GLOBALS['debugger']) != 0 && $this->debugMode) {
+                $response = ["throwableOutPut" => $GLOBALS['debugger']];
             }
             $response = json_encode($response);
             echo $response;
@@ -83,7 +91,7 @@ class App
                 $this->linksAndScripts = call_user_func_array([new LinksAndScripts($pageName), $pageName], $this->parameters);
             } catch (Throwable $e) {
                 $this->linksAndScripts = call_user_func_array([new LinksAndScripts($pageName), "default"], $this->parameters);
-                array_push($GLOBALS['errorMessages'], $e->getMessage());
+                array_push($GLOBALS['debugger'], ["message" => $e->getMessage(), "Throwable" => $e]);
             }
             /*this code approach is replicated since you can basically 
             set an $REQUEST[ajaxRequestIdentifier,serverTargetFunction]
@@ -94,7 +102,7 @@ class App
                 $this->model = new $pageName;
                 // instantiate the LinksAndScripts
             } catch (Throwable $e) {
-                array_push($GLOBALS['errorMessages'], $e->getMessage());
+                array_push($GLOBALS['debugger'], ["message" => $e->getMessage(), "Throwable" => $e]);
             }
         }
     }

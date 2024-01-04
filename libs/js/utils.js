@@ -27,13 +27,10 @@ function server(
         try {
           responseHandlerFunction(serverResponse);
         } catch (error) {
-          let debugMessage =
-            "responseHandlerFunction() may be missing some arguments";
-          serverError(debugMessage, error, serverResponse);
+          serverError("check the responseHandlerFunction()", error, serverResponse);
         }
       } catch (error) {
-        let debugMessage = "the server response is not JSON compatible Object";
-        serverError(debugMessage, error, serverResponse);
+        serverError("check serverResponse JSON compatibility", error, serverResponse);
       }
     }
   };
@@ -42,7 +39,7 @@ function server(
 }
 function serverError(debugMessage, error, responseText) {
   if (DEBUGMODE) {
-    console.log({
+    console.error({
       debugMessage: debugMessage,
       errorMessage: error,
       responseText: responseText,
@@ -74,47 +71,6 @@ function setFieldsValue(fieldsContainer, serverResponse) {
   });
 }
 /***forms functionality functions***/
-function submitFormToServer(form, serverTargetFunction) {
-  let formData = new FormData();
-  //get all input inputFields and their values
-  Array.from(form.elements).forEach((input) => {
-    //normal input file handle
-    if (
-      input.type != "button" &&
-      input.type != "submit" &&
-      input.type != "file"
-    ) {
-      formData.append(input.name, input.value);
-    }
-
-    // file input handler
-    if (input.type == "file" && input.files.length != 0) {
-      form.setAttribute("enctype", "multipart/form-data");
-      formData.append("files[]", input.name);
-      let fileListName = input.name + "[]";
-      for (let i = 0; i < input.files.length; i++) {
-        formData.append(fileListName, input.files[i]);
-      }
-    }
-  });
-  // send the form data to the server and reads the response
-  server(serverFormSubmitResponse, serverTargetFunction, formData);
-
-  //form submit response
-  function serverFormSubmitResponse(response) {
-    if (response[0] == true) {
-      form.reset(form.id == "fileUploadModal");
-      {
-        //close the upload form
-        document.getElementById("cancelFileUploadFormBtn").click()
-      }
-      window.alert("action well done");
-    } else {
-      window.alert("database error prevented the form submission");
-      console.log(response);
-    }
-  }
-}
 function enableFormButtonsFunctionalities() {
   // form buttons functionality to the forms and their buttons
   let forms = document.forms;
@@ -131,6 +87,43 @@ function enableFormButtonsFunctionalities() {
           // send request to server
           if (serverTargetFunction != null) {
             submitFormToServer(form, serverTargetFunction);
+            function submitFormToServer(form, serverTargetFunction) {
+              let formData = new FormData();
+              //get all input inputFields and their values
+              Array.from(form.elements).forEach((input) => {
+                //normal input file handle
+                if (
+                  input.type != "button" &&
+                  input.type != "submit" &&
+                  input.type != "file"
+                ) {
+                  formData.append(input.name, input.value);
+                }
+
+                // file input handler
+                if (input.type == "file" && input.files.length != 0) {
+                  form.setAttribute("enctype", "multipart/form-data");
+                  formData.append("files[]", input.name);
+                  let fileListName = input.name + "[]";
+                  for (let i = 0; i < input.files.length; i++) {
+                    formData.append(fileListName, input.files[i]);
+                  }
+                }
+              });
+              // send the form data to the server and reads the response
+              server(serverFormSubmitResponse, serverTargetFunction, formData);
+
+              //form submit response
+              function serverFormSubmitResponse(response) {
+                if (response[0]) {
+                  //form after submission action handler
+                  afterSuccessfulFormSubmissionAction(form,response[1])
+                } else {
+                  window.alert("action Failed");
+                  console.error({message:"database error prevented form submission",serverResponse:response});
+                }
+              }
+            }
           } else {
             window.alert("failed to submit the form");
             console.error("the serverTargetFunction is not set");
@@ -140,12 +133,17 @@ function enableFormButtonsFunctionalities() {
       // file-upload-form-toggler
       if (btn.className.includes("file-upload-form-toggler")) {
         btn.onclick = () => {
-          let uploadFormSubmitBtn = document.getElementById("submitFileUploadFormBtn");
-          uploadFormSubmitBtn.setAttribute("serverTargetFunction",btn.getAttribute("serverTargetFunction"))
-        }
+          let uploadFormSubmitBtn = document.getElementById(
+            "submitFileUploadFormBtn"
+          );
+          uploadFormSubmitBtn.setAttribute(
+            "serverTargetFunction",
+            btn.getAttribute("serverTargetFunction")
+          );
+        };
       }
-    })
-  })
+    });
+  });
 }
 /*** helper functions ***/
 function ObjectId(iDofElement) {

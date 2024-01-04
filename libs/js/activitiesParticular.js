@@ -8,7 +8,7 @@ function lenderPageData(response) {
   }
   window.onload = () => {
     // get the intoreId
-    let intoreId = localStorage.getItem("activityParticularId");
+    let intoreId = sessionStorage.getItem("activityParticularId");
   
     //lender Page content
     if (intoreId) {

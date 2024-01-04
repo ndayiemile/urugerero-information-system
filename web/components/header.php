@@ -13,7 +13,7 @@ require_once '../../core/App.php';
       echo $url;
     }
   } catch (Exception $e) {
-    echo 'Exception:' . $e->getMessage();
+    array_push($GLOBALS['debugger'], ["message" => $e->getMessage(), "Throwable" => $e]);
   }
   ?>
   <title>UDMS-home</title>

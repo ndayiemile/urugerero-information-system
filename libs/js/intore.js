@@ -83,7 +83,7 @@ function displayIntoreIdentities(response) {
     tr.innerHTML = rowContent;
     // redirect to intore particulars page
     tr.onclick = () => {
-      localStorage.setItem("intoreParticularId", dataRow.id);
+      sessionStorage.setItem("intoreParticularId", dataRow.id);
       window.location.href = "intoreIdentities.php";
     };
     container.appendChild(tr);

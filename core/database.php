@@ -116,7 +116,7 @@ class Database
 
                 //creates insertFields query
                 $fields = "";
-                $fields .= "cohortId, ";
+                // $fields .= "cohortId, ";
                 for ($i = 0; $i < count($fieldNames); $i++) {
                     if ($firstColumnIsIdentifier && $i == 0) {
                         continue;
@@ -133,8 +133,8 @@ class Database
                     $firstColumnIsIdentifier = is_numeric(number_format($fieldValues[0][0]));
                     $valueNames = "";
                     //append the cohort identifier
-                    $valueNames .= ":cohortId$j, ";
-                    $bindsSet["cohortId$j"] = $_SESSION['cohortId'];
+                    // $valueNames .= ":cohortId$j, ";
+                    // $bindsSet["cohortId$j"] = $_SESSION['cohortId'];
                     //loops through the data rows and creates query parts
                     for ($i = 0; $i < count($fieldNames); $i++) {
                         //skips the first column, assuming it to be an identifier column
@@ -167,10 +167,9 @@ class Database
                 }
                 try {
                     //executes the query
-                    $this->execute();
-                    return [true];
+                    return [$this->execute()];
                 } catch (Throwable $e) {
-                    return ["dbQuery" => $queryString, "error" => $e->getMessage()];
+                    array_push($GLOBALS['debugger'], ["message" => $e->getMessage(), "Throwable" => $e, "dbQuery" => $queryString]);
                 }
             }
         }
@@ -180,8 +179,10 @@ class Database
             if (isset($arguments["files"])) {
                 unset($arguments["files"]);
             }
-            $columns = "cohortId, ";
-            $prepColumns = ":cohortId, ";
+            $columns = "";
+            $prepColumns = "";
+            // $columns = "cohortId, ";
+            // $prepColumns = ":cohortId, ";
             // create string parts from passed parameters
             foreach ($arguments as $name => $value) {
                 $columns .= $name . ", ";
@@ -194,18 +195,16 @@ class Database
             $queryString = "INSERT INTO " . $table . "(" . $columns . ")" . " VALUES (" . "$prepColumns" . ")";
             $this->query($queryString);
             // append the cohort identifier
-            $this->bind(":cohortId", $_SESSION['cohortId']);
+            // $this->bind(":cohortId", $_SESSION['cohortId']);
             // bind the values to the query
             foreach ($arguments as $name => $value) {
                 $this->bind(":" . $name, $value);
             }
             // run and debug query
             try {
-                if ($this->execute()) {
-                    return [true];
-                }
+                return [$this->execute()];
             } catch (Throwable $e) {
-                return ["dbQuery" => $queryString, "error" => $e->getMessage()];
+                array_push($GLOBALS['debugger'], ["message" => $e->getMessage(), "Throwable" => $e, "dbQuery" => $queryString]);
             }
         }
     }
@@ -242,7 +241,7 @@ class Database
         try {
             return $this->resultSet();
         } catch (Throwable $e) {
-            return ["dbQuery" => $queryString, "error" => $e->getMessage()];
+            array_push($GLOBALS['debugger'], ["message" => $e->getMessage(), "Throwable" => $e, "dbQuery" => $queryString]);
         }
     }
 

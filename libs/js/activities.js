@@ -57,7 +57,7 @@ function displayAllActivitiesParticulars(response) {
     div.innerHTML = rowContent;
     // redirect to intore particulars page
     div.onclick = () => {
-      localStorage.setItem("activityParticularId", dataRow.id);
+      sessionStorage.setItem("activityParticularId", dataRow.id);
       window.location.href = "activitiesParticular.php";
     };
     container.appendChild(div);

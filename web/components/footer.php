@@ -7,15 +7,15 @@ try {
   foreach ($app->linksAndScripts["foot"] as $url) {
     echo $url;
   }
-} catch (Exception $e) {
-  echo 'Exception:' . $e->getMessage();
+} catch (Throwable $e) {
+  array_push($GLOBALS['debugger'],["message" => $e->getMessage(), "Throwable"=> $e]);
 }
 ?>
 <script>
   <?php
-  // server internal errors
-  if(count($GLOBALS['errorMessages']) != 0 && $app->debugMode == true){
-      echo "console.error(".json_encode($GLOBALS['errorMessages']).")";
+  // error output
+  if(count($GLOBALS['debugger']) != 0 && $app->debugMode){
+      echo "console.error(".json_encode($GLOBALS['debugger']).")";
     }
   ?>
 </script>

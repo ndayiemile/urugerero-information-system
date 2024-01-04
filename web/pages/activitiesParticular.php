@@ -21,8 +21,8 @@ include_once('../components/header.php')
                 <p class="fw-bold">
                     Location: <span class=" fw-normal fieldName" name="location">papa Danny Isimbi, kimisagara</span>
                 </p>
-                <p class="fw-bold">Descriptions:<br />
-                    <span class="fw-normal fieldName" name="descriptions">
+                <p class="fw-bold">description:<br />
+                    <span class="fw-normal fieldName" name="description">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur
                         quidem dolore, facere, laudantium, eos nihil optio natus a
                         exercitationem dolor incidunt illum velit commodi soluta sint
