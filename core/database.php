@@ -82,130 +82,32 @@ class Database
     //  insert operation function
     public function insert($table, ...$arguments)
     {
-        // saves xlsx or csv file data to the database
-        if (isset($_FILES["recordFile"]["tmp_name"][0])) {
-            $filename = $_FILES["recordFile"]["tmp_name"][0];
-            if ($_FILES["recordFile"]["size"][0] > 0) {
-                //initial values to local variables
-                $file = fopen($filename, "r");
-                $fieldNames = array();
-                $fieldValues = array();
-                $caughtEmptyFields = array();
-                $bindsSet = array();
-                $topRowPointer = true;
-                $firstColumnIsIdentifier = true;
-
-                //fetch and sort data from the csv file
-                while (($emapData = fgetcsv($file, 100000, ",")) !== FALSE) {
-                    if ($topRowPointer) {
-                        // select the header
-                        for ($i = 0; $i < count($emapData); $i++) {
-                            if ($emapData[$i] != "" && $emapData[$i] != null) {
-                                array_push($fieldNames, $emapData[$i]);
-                            }
-                        }
-                        //change the header pointer
-                        $topRowPointer = false;
-                        continue;
-                    }
-                    // insert normal data to the values array
-                    array_push($fieldValues, $emapData);
-                }
-                //closes the file
-                fclose($file);
-
-                //creates insertFields query
-                $fields = "";
-                // $fields .= "cohortId, ";
-                for ($i = 0; $i < count($fieldNames); $i++) {
-                    if ($firstColumnIsIdentifier && $i == 0) {
-                        continue;
-                    }
-                    $fields .= $fieldNames[$i] . ", ";
-                }
-                $fields = rtrim($fields, ", ");
-                $insertFields = $table . "(" . $fields . ")";
-
-                //get all cells, creates, insertValues string, and append name_values them to binds array
-                $insertValues = "";
-                for ($j = 0; $j < count($fieldValues); $j++) {
-                    //checks whether the first column is for id
-                    $firstColumnIsIdentifier = is_numeric(number_format($fieldValues[0][0]));
-                    $valueNames = "";
-                    //append the cohort identifier
-                    // $valueNames .= ":cohortId$j, ";
-                    // $bindsSet["cohortId$j"] = $_SESSION['cohortId'];
-                    //loops through the data rows and creates query parts
-                    for ($i = 0; $i < count($fieldNames); $i++) {
-                        //skips the first column, assuming it to be an identifier column
-                        if ($firstColumnIsIdentifier && $i == 0) {
-                            continue;
-                        }
-                        //initialize cell properties
-                        $cellValue = $fieldValues[$j][$i];
-                        $cellName = "R" . strval($j) . "C" . strval($i);
-                        //throw message for empty cells
-                        if (!($cellValue != "" && $cellValue != null)) {
-                            array_push($caughtEmptyFields, ["position" => '$fieldValues[' . $j . '][' . $i . '] is empty or null', "fieldName" => $fieldNames[$i]]);
-                        }
-                        //create value name, adds to the query, and save to the binds array
-                        $valueNames .= ":" . $cellName . ", ";
-                        $bindsSet[$cellName] = $cellValue;
-                    }
-                    $valueNames = rtrim($valueNames, ", ");
-                    $insertValues .= "(" . $valueNames . "), ";
-                }
-                $insertValues = rtrim($insertValues, ", ");
-
-                // creates the database query
-                $queryString = "INSERT INTO " . $insertFields . " VALUES " . $insertValues;
-                // prepares the query
-                $this->query($queryString);
-                // bind the values to the query
-                foreach ($bindsSet as $name => $value) {
-                    $this->bind(':' . $name, $value);
-                }
-                try {
-                    //executes the query
-                    return [$this->execute()];
-                } catch (Throwable $e) {
-                    array_push($GLOBALS['debugger'], ["message" => $e->getMessage(), "Throwable" => $e, "dbQuery" => $queryString]);
-                }
-            }
+        $columns = "";
+        $prepColumns = "";
+        // $columns = "cohortId, ";
+        // $prepColumns = ":cohortId, ";
+        // create string parts from passed parameters
+        foreach ($arguments as $name => $value) {
+            $columns .= $name . ", ";
+            $prepColumns .= ":" . $name . ", ";
         }
-        // saves text input fields values from the form to the database
-        else {
-            //file upload identifier
-            if (isset($arguments["files"])) {
-                unset($arguments["files"]);
-            }
-            $columns = "";
-            $prepColumns = "";
-            // $columns = "cohortId, ";
-            // $prepColumns = ":cohortId, ";
-            // create string parts from passed parameters
-            foreach ($arguments as $name => $value) {
-                $columns .= $name . ", ";
-                $prepColumns .= ":" . $name . ", ";
-            }
-            // remove the trailing spaces and commas
-            $columns = rtrim($columns, ", ");
-            $prepColumns = rtrim($prepColumns, ", ");
-            // creates the query
-            $queryString = "INSERT INTO " . $table . "(" . $columns . ")" . " VALUES (" . "$prepColumns" . ")";
-            $this->query($queryString);
-            // append the cohort identifier
-            // $this->bind(":cohortId", $_SESSION['cohortId']);
-            // bind the values to the query
-            foreach ($arguments as $name => $value) {
-                $this->bind(":" . $name, $value);
-            }
-            // run and debug query
-            try {
-                return [$this->execute()];
-            } catch (Throwable $e) {
-                array_push($GLOBALS['debugger'], ["message" => $e->getMessage(), "Throwable" => $e, "dbQuery" => $queryString]);
-            }
+        // remove the trailing spaces and commas
+        $columns = rtrim($columns, ", ");
+        $prepColumns = rtrim($prepColumns, ", ");
+        // creates the query
+        $queryString = "INSERT INTO " . $table . "(" . $columns . ")" . " VALUES (" . "$prepColumns" . ")";
+        $this->query($queryString);
+        // append the cohort identifier
+        // $this->bind(":cohortId", $_SESSION['cohortId']);
+        // bind the values to the query
+        foreach ($arguments as $name => $value) {
+            $this->bind(":" . $name, $value);
+        }
+        // run and debug query
+        try {
+            return [$this->execute()];
+        } catch (Throwable $e) {
+            array_push($GLOBALS['debugger'], ["message" => $e->getMessage(), "Throwable" => $e, "dbQuery" => $queryString]);
         }
     }
 

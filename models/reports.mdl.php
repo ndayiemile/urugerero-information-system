@@ -6,42 +6,175 @@ class Reports
     {
         $this->db = new Database;
     }
+    public function extractFileToDb($returnEntryId = false, $table, $additionalDataForEachRow = [], $firstColumnIsIdentifier = true)
+    {
+        $filename = $_FILES["recordFile"]["tmp_name"][0];
+        if ($_FILES["recordFile"]["size"][0] > 0) {
+            //initial values to local variables
+            $file = fopen($filename, "r");
+            $fieldNames = array();
+            $fieldValues = array();
+            $caughtEmptyFields = array();
+            $bindsSet = array();
+            $topRowPointer = true;
+            //fetch and sort data from the csv file
+            while (($emapData = fgetcsv($file, 100000, ",")) !== FALSE) {
+                if ($topRowPointer) {
+                    // select the header
+                    for ($i = 0; $i < count($emapData); $i++) {
+                        if ($emapData[$i] != "" && $emapData[$i] != null) {
+                            array_push($fieldNames, $emapData[$i]);
+                        }
+                    }
+                    //add additionalDataForEachRow headers
+                    foreach ($additionalDataForEachRow as $name => $value) {
+                        array_push($fieldNames, $name);
+                    }
+                    //change the header pointer
+                    $topRowPointer = false;
+                    continue;
+                }
+                //add additionalDataForEachRow values
+                foreach ($additionalDataForEachRow as $name => $value) {
+                    array_push($emapData, $value);
+                }
+                // insert normal data to the values array
+                array_push($fieldValues, $emapData);
+            }
+            //closes the file
+            fclose($file);
+            //creates insertFields query
+            $fields = "";
+            for ($i = 0; $i < count($fieldNames); $i++) {
+                if ($firstColumnIsIdentifier && $i == 0) {
+                    continue;
+                }
+                $fields .= $fieldNames[$i] . ", ";
+            }
+            $fields = rtrim($fields, ", ");
+            $insertFields = $table . "(" . $fields . ")";
+
+            //get all cells, creates, insertValues string, and append name_values them to binds array
+            $insertValues = "";
+            for ($j = 0; $j < count($fieldValues); $j++) {
+                //checks whether the first column is for id
+                $firstColumnIsIdentifier = is_numeric(number_format($fieldValues[0][0]));
+                $valueNames = "";
+                //append the cohort identifier
+                //loops through the data rows and creates query parts
+                for ($i = 0; $i < count($fieldNames); $i++) {
+                    //skips the first column, assuming it to be an identifier column
+                    if ($firstColumnIsIdentifier && $i == 0) {
+                        continue;
+                    }
+                    //initialize cell properties
+                    $cellValue = $fieldValues[$j][$i];
+                    $cellName = "R" . strval($j) . "C" . strval($i);
+                    //throw message for empty cells
+                    if (!($cellValue != "" && $cellValue != null)) {
+                        $iPosition = $i + 1;
+                        $jPosition = $j + 1;
+                        array_push($caughtEmptyFields, ["position" => '$fieldValues[' . $jPosition . '][' . $iPosition . '] is empty or null', "fieldName" => $fieldNames[$i]]);
+                    }
+                    //create value name, adds to the query, and save to the binds array
+                    $valueNames .= ":" . $cellName . ", ";
+                    $bindsSet[$cellName] = $cellValue;
+                }
+                $valueNames = rtrim($valueNames, ", ");
+                $insertValues .= "(" . $valueNames . "), ";
+            }
+            $insertValues = rtrim($insertValues, ", ");
+
+            if (!$returnEntryId) {
+                // creates the database query
+                $queryString = "INSERT INTO " . $insertFields . " VALUES " . $insertValues;
+                // prepares the query
+                $this->db->query($queryString);
+                // bind the values to the query
+                foreach ($bindsSet as $name => $value) {
+                    $this->db->bind(':' . $name, $value);
+                }
+                $fileInfo = ["caughtEmptyFields" => $caughtEmptyFields];
+                try {
+                    //executes the query
+                    $this->db->execute();
+                    return [true, ["message" => "file extracted successfuly", "fileInfo" => $fileInfo]];
+                } catch (Throwable $e) {
+                    $fileInfo['file'] = $_FILES["recordFile"];
+                    array_push($GLOBALS['debugger'], ["message" => $e->getMessage(), "Throwable" => $e, "dbQuery" => $queryString, "fileInfo" => $fileInfo]);
+                }
+            } else {
+                //works if and only if the csv comprises of a header and one row.
+                return $this->insertThenReturnId($table, $bindsSet);
+            }
+        }
+    }
     public function insertThenReturnId($table, $arguments)
     {
         if (!$this->db->selectAnd($table, ["id"], $arguments)) {
             $saveStatus = $this->db->insert($table, ...$arguments)[0];
             if ($saveStatus) {
-                return [true,["entityName"=>$table,"entryId"=>(int)$this->db->selectAnd($table, ["id"], $arguments)[0]->id]];
+                return [true, ["entityName" => $table, "entryId" => (int)$this->db->selectAnd($table, ["id"], $arguments)[0]->id]];
             }
         } else {
             return [false, "message" => "the $table is already registered"];
         }
     }
     public function registerNewIntore(...$arguments)
-    {
-        $arguments["cohortId"] = $_SESSION['cohortId'];
-        return $this->insertThenReturnId("intoreIdentities", $arguments);
+    { // saves csv new intore csv file data to the database
+        $table = "intoreIdentities";
+        if (isset($_FILES["recordFile"]["tmp_name"][0])) {
+            $additionalDataForEachRow = ["cohortId" => $_SESSION['cohortId']];
+            return $this->extractFileToDb(false, $table, $additionalDataForEachRow);
+        } else {
+            return $this->insertThenReturnId($table, $arguments);
+        }
     }
     public function saveNewActivity(...$arguments)
     {
-        return $this->insertThenReturnId("activities", $arguments);
+        $table = "activities";
+        if (isset($_FILES["recordFile"]["tmp_name"][0])) {
+            return $this->extractFileToDb(true, $table, $arguments);
+        } else {
+            return $this->insertThenReturnId($table, $arguments);
+        }
     }
 
     public function savePermission(...$arguments)
     {
-        return $this->insertThenReturnId("permissions",$arguments);
+        $table = "permissions";
+        if (isset($_FILES["recordFile"]["tmp_name"][0])) {
+            return $this->extractFileToDb(true, $table, $arguments);
+        } else {
+            return $this->insertThenReturnId($table, $arguments);
+        }
     }
     public function saveHonor(...$arguments)
     {
-        return $this->insertThenReturnId("honors",$arguments);
+        $table = "honors";
+        if (isset($_FILES["recordFile"]["tmp_name"][0])) {
+            return $this->extractFileToDb(true, $table, $arguments);
+        } else {
+            return $this->insertThenReturnId($table, $arguments);
+        }
     }
     public function saveMisconduct(...$arguments)
     {
-        return $this->insertThenReturnId("misconducts",$arguments);
+        $table = "misconducts";
+        if (isset($_FILES["recordFile"]["tmp_name"][0])) {
+            return $this->extractFileToDb(true, $table, $arguments);
+        } else {
+            return $this->insertThenReturnId($table, $arguments);
+        }
     }
     public function saveResponsibility(...$arguments)
     {
-        return $this->insertThenReturnId("responsibilities",$arguments);
+        $table = "responsibilities";
+        if (isset($_FILES["recordFile"]["tmp_name"][0])) {
+            return $this->extractFileToDb(true, $table, $arguments);
+        } else {
+            return $this->insertThenReturnId($table, $arguments);
+        }
     }
 
 
