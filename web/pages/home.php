@@ -39,22 +39,22 @@ include_once('../components/header.php')
           <div class="card-footer bg-medium-blue border-0 p-1"></div>
         </div>
       </div>
-      <!-- projected attendance rates -->
+      <!-- Cell Attendance Progressions -->
       <div class="col-12">
         <div class="card border-0 shadow-sm">
           <div class="card-header border-0 py-4 bg-white">
-            <h5 class="">Projected Attendance Rate</h5>
+            <h5 class="">Cell Attendance Progression</h5>
           </div>
           <div class="card-body">
             <div id="chartForProjectedAttendanceRate"></div>
           </div>
         </div>
       </div>
-      <!-- sector data overview -->
+      <!-- Intore Status -->
       <div class="col-12">
         <div class="card shadow-sm border-0">
           <div class="card-header border-0 py-4 bg-white">
-            <h5 class="">Sector Data Overview</h5>
+            <h5 class="">Intore Status</h5>
           </div>
           <div class="card-body">
             <div class="col-12 col-lg-9">
@@ -78,7 +78,7 @@ include_once('../components/header.php')
           <div class="card-body pb-0 px-0">
             <div class="alert alert-warning alert-dismissible fade show p-1" role="alert">
               <button type="button" class="btn-close btn-sm gs-fs-8 p-1 m-0" data-bs-dismiss="alert" aria-label="Close"></button>
-              <span  class="gs-fs-7 p-0 m-0">
+              <span class="gs-fs-7 p-0 m-0">
                 <strong>Holy guacamole!</strong> <span>
                   You should check in on some of
                   those fields below.
@@ -87,7 +87,7 @@ include_once('../components/header.php')
             </div>
             <div class="alert alert-primary alert-dismissible fade show p-1" role="alert">
               <button type="button" class="btn-close btn-sm gs-fs-8 p-1 m-0" data-bs-dismiss="alert" aria-label="Close"></button>
-              <span  class="gs-fs-7 p-0 m-0">
+              <span class="gs-fs-7 p-0 m-0">
                 <strong>Holy guacamole!</strong> <span>
                   You should check in on some of
                   those fields below.
@@ -96,7 +96,7 @@ include_once('../components/header.php')
             </div>
             <div class="alert alert-danger alert-dismissible fade show p-1" role="alert">
               <button type="button" class="btn-close btn-sm gs-fs-8 p-1 m-0" data-bs-dismiss="alert" aria-label="Close"></button>
-              <span  class="gs-fs-7 p-0 m-0">
+              <span class="gs-fs-7 p-0 m-0">
                 <strong>Holy guacamole!</strong> <span>
                   You should check in on some of
                   those fields below.
@@ -156,7 +156,7 @@ include_once('../components/header.php')
                   <span class="gs-fs-8">Lorem, ipsum dolor.</span>
                   <span class="gs-fs-8">sept 5</span>
                 </div>
-                <div class="timeline-activity card-body p-0 position-relative" style="
+                <div class="timeline-activity card-body p-0 position-relative d-none" style="
                           background-image: url(../../depository/activities/WhatsApp\ Image\ 2023-10-19\ at\ 12.29.14.jpeg);
                         ">
                   <div class="text-white h-100 ps-2 d-flex align-items-center">
@@ -176,28 +176,7 @@ include_once('../components/header.php')
                   <span class="gs-fs-8">Lorem, ipsum dolor.</span>
                   <span class="gs-fs-8">sept 5</span>
                 </div>
-                <div class="timeline-activity card-body p-0 position-relative" style="
-                          background-image: url(../../depository/activities/WhatsApp\ Image\ 2023-10-19\ at\ 12.29.14.jpeg);
-                        ">
-                  <div class="text-white h-100 ps-2 d-flex align-items-center">
-                    <div class="activity-details">
-                      <div class="location mb-2 fs-6 fw-light m-0">
-                        <span> At <small>Kamuhoza, Isimbi</small> </span>
-                      </div>
-                      <div class="participant gs-fs-7 fw-light m-0">
-                        By Kamuhoza
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- done activities -->
-              <div class="card timeline-item position-relative rounded mb-2 border shadow">
-                <div class="card-header fw-bolder border-0 bg-white p-0 d-flex justify-content-between p-2">
-                  <span class="gs-fs-8">Lorem, ipsum dolor.</span>
-                  <span class="gs-fs-8">sept 5</span>
-                </div>
-                <div class="timeline-activity card-body p-0 position-relative" style="
+                <div class="timeline-activity card-body p-0 position-relative d-none" style="
                           background-image: url(../../depository/activities/WhatsApp\ Image\ 2023-10-19\ at\ 12.29.14.jpeg);
                         ">
                   <div class="text-white h-100 ps-2 d-flex align-items-center">
@@ -217,7 +196,227 @@ include_once('../components/header.php')
                   <span class="gs-fs-8">Lorem, ipsum dolor.</span>
                   <span class="gs-fs-8">sept 5</span>
                 </div>
-                <div class="timeline-activity card-body p-0 position-relative" style="
+                <div class="timeline-activity card-body p-0 position-relative d-none" style="
+                          background-image: url(../../depository/activities/WhatsApp\ Image\ 2023-10-19\ at\ 12.29.14.jpeg);
+                        ">
+                  <div class="text-white h-100 ps-2 d-flex align-items-center">
+                    <div class="activity-details">
+                      <div class="location mb-2 fs-6 fw-light m-0">
+                        <span> At <small>Kamuhoza, Isimbi</small> </span>
+                      </div>
+                      <div class="participant gs-fs-7 fw-light m-0">
+                        By Kamuhoza
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card timeline-item position-relative rounded mb-2 border shadow">
+                <div class="card-header fw-bolder border-0 bg-white p-0 d-flex justify-content-between p-2">
+                  <span class="gs-fs-8">Lorem, ipsum dolor.</span>
+                  <span class="gs-fs-8">sept 5</span>
+                </div>
+                <div class="timeline-activity card-body p-0 position-relative d-none" style="
+                          background-image: url(../../depository/activities/WhatsApp\ Image\ 2023-10-19\ at\ 12.29.14.jpeg);
+                        ">
+                  <div class="text-white h-100 ps-2 d-flex align-items-center">
+                    <div class="activity-details">
+                      <div class="location mb-2 fs-6 fw-light m-0">
+                        <span> At <small>Kamuhoza, Isimbi</small> </span>
+                      </div>
+                      <div class="participant gs-fs-7 fw-light m-0">
+                        By Kamuhoza
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card timeline-item position-relative rounded mb-2 border shadow">
+                <div class="card-header fw-bolder border-0 bg-white p-0 d-flex justify-content-between p-2">
+                  <span class="gs-fs-8">Lorem, ipsum dolor.</span>
+                  <span class="gs-fs-8">sept 5</span>
+                </div>
+                <div class="timeline-activity card-body p-0 position-relative d-none" style="
+                          background-image: url(../../depository/activities/WhatsApp\ Image\ 2023-10-19\ at\ 12.29.14.jpeg);
+                        ">
+                  <div class="text-white h-100 ps-2 d-flex align-items-center">
+                    <div class="activity-details">
+                      <div class="location mb-2 fs-6 fw-light m-0">
+                        <span> At <small>Kamuhoza, Isimbi</small> </span>
+                      </div>
+                      <div class="participant gs-fs-7 fw-light m-0">
+                        By Kamuhoza
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card timeline-item position-relative rounded mb-2 border shadow">
+                <div class="card-header fw-bolder border-0 bg-white p-0 d-flex justify-content-between p-2">
+                  <span class="gs-fs-8">Lorem, ipsum dolor.</span>
+                  <span class="gs-fs-8">sept 5</span>
+                </div>
+                <div class="timeline-activity card-body p-0 position-relative d-none" style="
+                          background-image: url(../../depository/activities/WhatsApp\ Image\ 2023-10-19\ at\ 12.29.14.jpeg);
+                        ">
+                  <div class="text-white h-100 ps-2 d-flex align-items-center">
+                    <div class="activity-details">
+                      <div class="location mb-2 fs-6 fw-light m-0">
+                        <span> At <small>Kamuhoza, Isimbi</small> </span>
+                      </div>
+                      <div class="participant gs-fs-7 fw-light m-0">
+                        By Kamuhoza
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card timeline-item position-relative rounded mb-2 border shadow">
+                <div class="card-header fw-bolder border-0 bg-white p-0 d-flex justify-content-between p-2">
+                  <span class="gs-fs-8">Lorem, ipsum dolor.</span>
+                  <span class="gs-fs-8">sept 5</span>
+                </div>
+                <div class="timeline-activity card-body p-0 position-relative d-none" style="
+                          background-image: url(../../depository/activities/WhatsApp\ Image\ 2023-10-19\ at\ 12.29.14.jpeg);
+                        ">
+                  <div class="text-white h-100 ps-2 d-flex align-items-center">
+                    <div class="activity-details">
+                      <div class="location mb-2 fs-6 fw-light m-0">
+                        <span> At <small>Kamuhoza, Isimbi</small> </span>
+                      </div>
+                      <div class="participant gs-fs-7 fw-light m-0">
+                        By Kamuhoza
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card timeline-item position-relative rounded mb-2 border shadow">
+                <div class="card-header fw-bolder border-0 bg-white p-0 d-flex justify-content-between p-2">
+                  <span class="gs-fs-8">Lorem, ipsum dolor.</span>
+                  <span class="gs-fs-8">sept 5</span>
+                </div>
+                <div class="timeline-activity card-body p-0 position-relative d-none" style="
+                          background-image: url(../../depository/activities/WhatsApp\ Image\ 2023-10-19\ at\ 12.29.14.jpeg);
+                        ">
+                  <div class="text-white h-100 ps-2 d-flex align-items-center">
+                    <div class="activity-details">
+                      <div class="location mb-2 fs-6 fw-light m-0">
+                        <span> At <small>Kamuhoza, Isimbi</small> </span>
+                      </div>
+                      <div class="participant gs-fs-7 fw-light m-0">
+                        By Kamuhoza
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card timeline-item position-relative rounded mb-2 border shadow">
+                <div class="card-header fw-bolder border-0 bg-white p-0 d-flex justify-content-between p-2">
+                  <span class="gs-fs-8">Lorem, ipsum dolor.</span>
+                  <span class="gs-fs-8">sept 5</span>
+                </div>
+                <div class="timeline-activity card-body p-0 position-relative d-none" style="
+                          background-image: url(../../depository/activities/WhatsApp\ Image\ 2023-10-19\ at\ 12.29.14.jpeg);
+                        ">
+                  <div class="text-white h-100 ps-2 d-flex align-items-center">
+                    <div class="activity-details">
+                      <div class="location mb-2 fs-6 fw-light m-0">
+                        <span> At <small>Kamuhoza, Isimbi</small> </span>
+                      </div>
+                      <div class="participant gs-fs-7 fw-light m-0">
+                        By Kamuhoza
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card timeline-item position-relative rounded mb-2 border shadow">
+                <div class="card-header fw-bolder border-0 bg-white p-0 d-flex justify-content-between p-2">
+                  <span class="gs-fs-8">Lorem, ipsum dolor.</span>
+                  <span class="gs-fs-8">sept 5</span>
+                </div>
+                <div class="timeline-activity card-body p-0 position-relative d-none" style="
+                          background-image: url(../../depository/activities/WhatsApp\ Image\ 2023-10-19\ at\ 12.29.14.jpeg);
+                        ">
+                  <div class="text-white h-100 ps-2 d-flex align-items-center">
+                    <div class="activity-details">
+                      <div class="location mb-2 fs-6 fw-light m-0">
+                        <span> At <small>Kamuhoza, Isimbi</small> </span>
+                      </div>
+                      <div class="participant gs-fs-7 fw-light m-0">
+                        By Kamuhoza
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card timeline-item position-relative rounded mb-2 border shadow">
+                <div class="card-header fw-bolder border-0 bg-white p-0 d-flex justify-content-between p-2">
+                  <span class="gs-fs-8">Lorem, ipsum dolor.</span>
+                  <span class="gs-fs-8">sept 5</span>
+                </div>
+                <div class="timeline-activity card-body p-0 position-relative d-none" style="
+                          background-image: url(../../depository/activities/WhatsApp\ Image\ 2023-10-19\ at\ 12.29.14.jpeg);
+                        ">
+                  <div class="text-white h-100 ps-2 d-flex align-items-center">
+                    <div class="activity-details">
+                      <div class="location mb-2 fs-6 fw-light m-0">
+                        <span> At <small>Kamuhoza, Isimbi</small> </span>
+                      </div>
+                      <div class="participant gs-fs-7 fw-light m-0">
+                        By Kamuhoza
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card timeline-item position-relative rounded mb-2 border shadow">
+                <div class="card-header fw-bolder border-0 bg-white p-0 d-flex justify-content-between p-2">
+                  <span class="gs-fs-8">Lorem, ipsum dolor.</span>
+                  <span class="gs-fs-8">sept 5</span>
+                </div>
+                <div class="timeline-activity card-body p-0 position-relative d-none" style="
+                          background-image: url(../../depository/activities/WhatsApp\ Image\ 2023-10-19\ at\ 12.29.14.jpeg);
+                        ">
+                  <div class="text-white h-100 ps-2 d-flex align-items-center">
+                    <div class="activity-details">
+                      <div class="location mb-2 fs-6 fw-light m-0">
+                        <span> At <small>Kamuhoza, Isimbi</small> </span>
+                      </div>
+                      <div class="participant gs-fs-7 fw-light m-0">
+                        By Kamuhoza
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card timeline-item position-relative rounded mb-2 border shadow">
+                <div class="card-header fw-bolder border-0 bg-white p-0 d-flex justify-content-between p-2">
+                  <span class="gs-fs-8">Lorem, ipsum dolor.</span>
+                  <span class="gs-fs-8">sept 5</span>
+                </div>
+                <div class="timeline-activity card-body p-0 position-relative d-none" style="
+                          background-image: url(../../depository/activities/WhatsApp\ Image\ 2023-10-19\ at\ 12.29.14.jpeg);
+                        ">
+                  <div class="text-white h-100 ps-2 d-flex align-items-center">
+                    <div class="activity-details">
+                      <div class="location mb-2 fs-6 fw-light m-0">
+                        <span> At <small>Kamuhoza, Isimbi</small> </span>
+                      </div>
+                      <div class="participant gs-fs-7 fw-light m-0">
+                        By Kamuhoza
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card timeline-item position-relative rounded mb-2 border shadow">
+                <div class="card-header fw-bolder border-0 bg-white p-0 d-flex justify-content-between p-2">
+                  <span class="gs-fs-8">Lorem, ipsum dolor.</span>
+                  <span class="gs-fs-8">sept 5</span>
+                </div>
+                <div class="timeline-activity card-body p-0 position-relative d-none" style="
                           background-image: url(../../depository/activities/WhatsApp\ Image\ 2023-10-19\ at\ 12.29.14.jpeg);
                         ">
                   <div class="text-white h-100 ps-2 d-flex align-items-center">
@@ -239,25 +438,25 @@ include_once('../components/header.php')
     </div>
   </article>
 </section>
-<section class="row mt-3">
+<section class="row gx-3">
   <!-- recent attendance rate  -->
-  <div class="col-12">
+  <div class="col-12 col-lg-6">
     <div class="card border-0 shadow-sm">
       <div class="card-header border-0 py-4 bg-white">
         <h5 class="">Cell Data Overview</h5>
       </div>
       <div class="card-body p-0">
-        <div class="row">
-          <div class="col-12 col-lg-4 d-flex justify-content-center pb-3">
-            <div class="mb-2" id="chartForCellDataOverView1"></div>
-          </div>
-          <div class="col-12 col-lg-4 d-flex justify-content-center pb-3">
-            <div id="chartForCellDataOverView2"></div>
-          </div>
-          <div class="col-12 col-lg-4 d-flex justify-content-center pb-3">
-            <div id="chartForCellDataOverView3"></div>
-          </div>
-        </div>
+        <div class="mb-2" id="chartForSectorAttendanceDataOverView"></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-lg-6">
+    <div class="card border-0 shadow-sm">
+      <div class="card-header border-0 py-4 bg-white">
+        <h5 class="">Cell Data Overview</h5>
+      </div>
+      <div class="card-body p-0">
+        <div id="chartForSectorActivitiesDataOverView"></div>
       </div>
     </div>
   </div>

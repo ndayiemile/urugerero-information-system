@@ -13,7 +13,7 @@ include_once('../components/header.php');
                     <option value="400">400</option>
                 </select>
                 <!-- by participant filter -->
-                <select name="participant" class="sortKey border border-1 bg-white mx-2 text-center outline-none select-arrow-none px-2">
+                <select name="participant" class="sortKey border border-1 rounded-pill bg-white mx-2 text-center outline-none select-arrow-none px-2">
                     <option value="undefined">participant</option>
                     <option value="sector">Sector</option>
                     <option value="kamuhoza">Kamuhoza</option>
@@ -21,7 +21,7 @@ include_once('../components/header.php');
                     <option value="kimisagara">Kimisagara</option>
                 </select>
                 <!-- activity category filters -->
-                <select name="category" class="sortKey border border-1 bg-white text-center outline-none select-arrow-none">
+                <select name="category" class="sortKey border border-1 rounded-pill bg-white text-center outline-none select-arrow-none">
                     <option value="undefined">category</option>
                     <option value="survey">survey</option>
                     <option value="parade">parade</option>
@@ -32,14 +32,14 @@ include_once('../components/header.php');
                 <!-- number of available records -->
                 <span class="d-none d-md-block me-3 ms-auto"><small>50</small> of <small>100</small></span>
                 <!-- activity due date filters -->
-                <div class="border border-1 bg-white mx-2 text-center">
-                    <select name="dueDateOperator" class="sortKey border border-start-0 border-bottom-0 border-top-0 text-center select-arrow-none outline-none px-2 border-1 h-100 bg-white">
+                <div class="border border-1 bg-white mx-2 text-center rounded-pill px-3">
+                    <select name="dueDateOperator" class="sortKey border border-start-0 border-bottom-0 border-top-0 text-center select-arrow-none outline-none pe-1 ps-0 border-1 h-100 bg-transparent">
                         <option value="undefined">any</option>
                         <option value="=">On</option>
                         <option value="<">Before</option>
                         <option value=">">After</option>
                     </select>
-                    <input type="date" name="dueDate" class="sortKey gs-fs-8 outline-none border border-0" />
+                    <input type="date" name="dueDate" class="sortKey outline-none border border-0 p-0" />
                 </div>
             </div>
         </div>

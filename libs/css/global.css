@@ -203,7 +203,7 @@ body {
 /* Done activities timeline */
 .timeline {
   border-left: 2px solid hsl(0, 0%, 90%);
-  max-height:655px;
+  max-height:270px;
 }
 .timeline::-webkit-scrollbar {
   display: none;

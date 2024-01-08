@@ -432,7 +432,6 @@ include_once('../components/header.php');
           <div class="mb-3">
             <label for="" class="form-label">Category:</label>
             <select class="form-select form-select" name="category" id="">
-              <option value="General">General</option>
               <option value="Sick">Sick</option>
               <option value="Employed">Employed</option>
               <option value="Studying">Studying</option>
