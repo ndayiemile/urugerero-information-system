@@ -8,6 +8,8 @@ window.onload = () => {
   );
   // render graphs
   analyticsGraphs();
+  //get done activities
+  getDoneActivities();
 };
 // render all graphs on the Dashboard UI
 function analyticsGraphs() {
@@ -278,12 +280,12 @@ function analyticsGraphs() {
   }
 
   function prepareSectorActivitiesDataOverView(response) {
-    let seriesData = []
-    let categoriesData = []
-    response.forEach(item =>{
-      seriesData.push(item.count)
-      categoriesData.push(item.category)
-    })
+    let seriesData = [];
+    let categoriesData = [];
+    response.forEach((item) => {
+      seriesData.push(item.count);
+      categoriesData.push(item.category);
+    });
     renderSectorActivitiesDataOverView(seriesData, categoriesData);
     function renderSectorActivitiesDataOverView(seriesData, categoriesData) {
       let options_chartForSectorActivitiesDataOverView = {
@@ -334,4 +336,33 @@ function analyticsGraphs() {
 function getNumberOfActivitiesAndRegisteredIntore(response) {
   ObjectId("total-number-of-intore").innerText = response.intore;
   ObjectId("total-number-of-activities").innerText = response.activities;
+}
+function getDoneActivities(){
+  let formData = new FormData()
+  server(displayDoneActivities, "getDoneActivities", formData)
+  function displayDoneActivities(response) {
+    console.log(response);
+    // debugger;
+    let container = ObjectId("doneActivities-container");
+    //clear the container
+    container.innerHTML = "";
+    // append new children to the container
+    response.forEach((dataRow) => {
+      let div = document.createElement("div");
+      div.classList.add("card", "timeline-item", "position-relative", "rounded", "mb-2", "border", "shadow","cursor-pointer");
+      let rowContent = `
+        <div class="card-header fw-bolder border-0 bg-white p-0 d-flex justify-content-between p-2">
+          <span class="gs-fs-8">${dataRow.title}</span>
+          <span class="gs-fs-8">${dataRow.dueDate}</span>
+        </div>
+        `;
+      div.innerHTML = rowContent;
+      // redirect to intore particulars page
+      div.onclick = () => {
+        sessionStorage.setItem("activityParticularId", dataRow.id);
+        window.location.href = "activitiesParticular.php";
+      };
+      container.appendChild(div);
+    });
+  }
 }

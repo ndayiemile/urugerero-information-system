@@ -1,5 +1,5 @@
-<?php
-require_once '../../core/App.php';
+<?php require_once '../../core/App.php'; 
+$userIdentities = $app->models["globalModel"]->getUserIdentities();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -152,8 +152,8 @@ require_once '../../core/App.php';
   <!-- main -->
   <main class="position-relative px-3">
     <!-- top navbar -->
-    <nav class="navbar navbar-expand-lg bg-white rounded py-1 mt-2">
-      <div class="container-fluid p-1">
+    <nav class="navbar navbar-expand-lg pb-0 pt-2 bg-light sticky-top">
+      <div class="container-fluid py-2 px-1 bg-white rounded" id="top-nav">
         <div class="col-1 col-lg-2">
           <button class="navbar-toggler bg-none p-0 border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#sideNavbar" aria-controls="sideNavbarOffcanvas">
             <span class="">
@@ -184,19 +184,34 @@ require_once '../../core/App.php';
           </form>
         </div>
         <div class="col-2 col-lg-3">
-          <div class="d-flex justify-content-end">
+          <div class="d-flex justify-content-end cursor-pointer" data-bs-toggle="dropdown" aria-expanded="false">
             <div class="px-lg-1">
               <img src="../../depository/profilePictures/9334183.jpg" class="profile-picture rounded-circle" alt="profile picture" />
             </div>
             <div class="d-none d-lg-block">
-              <p class="m-0">Ndayishimiye</p>
-              <p class="m-0">Emile</p>
+              <p class="m-0"><?php echo $userIdentities->firstName; ?></p>
+              <p class="m-0"><?php echo $userIdentities->secondName; ?></p>
             </div>
           </div>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="profiles.php"><span><span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                      <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                      <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+                    </svg></span> <span>Profile</span></span></a></li>
+            <li><a class="dropdown-item" href="settings.php"><span><span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear-fill" viewBox="0 0 16 16">
+                      <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
+                    </svg></span></span> <span>Settings</span></a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="logout.php"><span><span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-open-fill" viewBox="0 0 16 16">
+                      <path d="M1.5 15a.5.5 0 0 0 0 1h13a.5.5 0 0 0 0-1H13V2.5A1.5 1.5 0 0 0 11.5 1H11V.5a.5.5 0 0 0-.57-.495l-7 1A.5.5 0 0 0 3 1.5V15zM11 2h.5a.5.5 0 0 1 .5.5V15h-1zm-2.5 8c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1" />
+                    </svg></span> <span>Logout</span></span></a></li>
+          </ul>
         </div>
       </div>
     </nav>
-    <section class="mt-3 rounded d-flex justify-content-between align-items-center">
+    <section class="mt-3 rounded d-flex justify-content-between align-items-center" id="cohort-section">
       <p class="m-0 fs-7 fw-light">
         Inkomezabogwi ikiciro cya 11 / <span>Kimisagara</span>
       </p>

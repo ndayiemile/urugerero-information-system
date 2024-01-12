@@ -189,4 +189,9 @@ class Home
         $this->db->query($queryString);
         return $this->db->resultSet();
     }
+
+    public function getDoneActivities(...$arguments){
+        $tuples = ["id,title,dueDate"];
+        return $this->db->selectAnd("activities", $tuples, $arguments);
+    }
 }

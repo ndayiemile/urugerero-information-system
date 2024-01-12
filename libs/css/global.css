@@ -278,7 +278,7 @@ body {
   -moz-appearance: none;
   background-image: none;
 }
-.hoverable:hover{
+.cursor-pointer:hover{
  cursor: pointer;
 }
 .table>:not(caption)>*>* {

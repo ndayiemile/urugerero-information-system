@@ -149,7 +149,7 @@ include_once('../components/header.php')
             </div>
           </div>
           <div class="card-body pb-0 ps-3 pe-0">
-            <div class="timeline scroll-y position-relative ps-2 pb-0">
+            <div class="timeline scroll-y position-relative ps-2 pb-0" id="doneActivities-container">
               <!-- done activities -->
               <div class="card timeline-item position-relative rounded mb-2 border shadow">
                 <div class="card-header fw-bolder border-0 bg-white p-0 d-flex justify-content-between p-2">

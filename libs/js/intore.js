@@ -182,7 +182,7 @@ function prepareSortKeys() {
         let content = "";
         sortOptionsSet.forEach((keyValue) => {
           let div = `
-            <div class="sortKey hoverable d-flex align-items-center p-3 ${
+            <div class="sortKey cursor-pointer d-flex align-items-center p-3 ${
               keyValue == "all" ? "focused bg-opacity-25 bg-secondary" : ""
             }" name="${
             keyValue == "all" ? "currentStatusSortKeysValue" : ""

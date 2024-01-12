@@ -1,4 +1,7 @@
 <?php
+include_once('../../core/App.php');
+?>
+<?php
 include_once('../components/header.php');
 ?>
 <section class="mt-3">

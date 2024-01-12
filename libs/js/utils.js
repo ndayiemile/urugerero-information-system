@@ -27,10 +27,18 @@ function server(
         try {
           responseHandlerFunction(serverResponse);
         } catch (error) {
-          serverError("check the responseHandlerFunction()", error, serverResponse);
+          serverError(
+            "check the responseHandlerFunction()",
+            error,
+            serverResponse
+          );
         }
       } catch (error) {
-        serverError("check serverResponse JSON compatibility", error, serverResponse);
+        serverError(
+          "check serverResponse JSON compatibility",
+          error,
+          serverResponse
+        );
       }
     }
   };
@@ -117,10 +125,13 @@ function enableFormButtonsFunctionalities() {
               function serverFormSubmitResponse(response) {
                 if (response[0]) {
                   //form after submission action handler
-                  afterSuccessfulFormSubmissionAction(form,response[1])
+                  afterSuccessfulFormSubmissionAction(form, response[1]);
                 } else {
                   window.alert("action Failed");
-                  console.error({message:"database error prevented form submission",serverResponse:response});
+                  console.error({
+                    message: "database error prevented form submission",
+                    serverResponse: response,
+                  });
                 }
               }
             }
@@ -164,4 +175,23 @@ function printPageArea(areaID) {
   document.body.innerHTML = printsection;
   window.print();
   document.body.innerHTML = getFullContent;
+}
+function getCookie(name) {
+  // Split cookie string and get all individual name=value pairs in an array
+  let cookieArr = document.cookie.split(";");
+
+  // Loop through the array elements
+  for (let i = 0; i < cookieArr.length; i++) {
+    let cookiePair = cookieArr[i].split("=");
+
+    /* Removing whitespace at the beginning of the cookie name
+      and compare it with the given string */
+    if (name == cookiePair[0].trim()) {
+      // Decode the cookie value and return
+      return decodeURIComponent(cookiePair[1]);
+    }
+  }
+
+  // Return null if not found
+  return null;
 }
