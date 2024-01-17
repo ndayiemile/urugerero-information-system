@@ -1,4 +1,4 @@
-<?php require_once '../../core/App.php'; 
+<?php require_once '../../core/App.php';
 $userIdentities = $app->models["globalModel"]->getUserIdentities();
 ?>
 <!DOCTYPE html>
@@ -152,7 +152,7 @@ $userIdentities = $app->models["globalModel"]->getUserIdentities();
   <!-- main -->
   <main class="position-relative px-3">
     <!-- top navbar -->
-    <nav class="navbar navbar-expand-lg pb-0 pt-2 bg-light sticky-top">
+    <nav class="navbar navbar-expand-lg pb-0 pt-2 bg-light sticky-top" id="top-nav-container">
       <div class="container-fluid py-2 px-1 bg-white rounded" id="top-nav">
         <div class="col-1 col-lg-2">
           <button class="navbar-toggler bg-none p-0 border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#sideNavbar" aria-controls="sideNavbarOffcanvas">

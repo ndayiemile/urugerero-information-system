@@ -303,9 +303,9 @@ include_once('../components/header.php');
                     <label for="" class="form-label">participant</label>
                     <select class="form-select form-select" name="participant" id="">
                       <option selected>Sector</option>
-                      <option value="">Kimisagara</option>
-                      <option value="">Kamuhoza</option>
-                      <option value="">Katabaro</option>
+                      <option value="Kimisagara">Kimisagara</option>
+                      <option value="Kamuhoza">Kamuhoza</option>
+                      <option value="Katabaro">Katabaro</option>
                     </select>
                   </div>
                   <!-- dueDate -->
@@ -350,9 +350,9 @@ include_once('../components/header.php');
                     <label for="" class="form-label">participant</label>
                     <select class="form-select form-select" name="participant" id="">
                       <option selected>Sector</option>
-                      <option value="">Kimisagara</option>
-                      <option value="">Kamuhoza</option>
-                      <option value="">Katabaro</option>
+                      <option value="Kimisagara">Kimisagara</option>
+                      <option value="Kamuhoza">Kamuhoza</option>
+                      <option value="Katabaro">Katabaro</option>
                     </select>
                   </div>
                   <!-- dueDate -->
@@ -395,9 +395,9 @@ include_once('../components/header.php');
             <label for="" class="form-label">participant</label>
             <select class="form-select form-select" name="participant" id="">
               <option selected>Sector</option>
-              <option value="">Kimisagara</option>
-              <option value="">Kamuhoza</option>
-              <option value="">Katabaro</option>
+              <option value="Kimisagara">Kimisagara</option>
+              <option value="Kamuhoza">Kamuhoza</option>
+              <option value="Katabaro">Katabaro</option>
             </select>
           </div>
           <!-- start - end date -->
