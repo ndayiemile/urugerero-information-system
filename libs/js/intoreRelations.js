@@ -1,7 +1,10 @@
+// removes the top navbar sticky behavior
+document.getElementById("top-nav-container").classList.remove("sticky-top")
+
 let intoreRelationVariables = JSON.parse(sessionStorage.getItem(
   "intoreRelationVariables"
 ))
-console.log(intoreRelationVariables)
+
 /***server response hundler function ***/
 function displayIntoreIdentities(response) {
   let mainContent = response
@@ -67,22 +70,25 @@ function displayIntoreIdentities(response) {
   ObjectId("save-attendance-btn").onclick = () => {
     // if(confirm("Please make sure that all attendees were recorded before you save")){
     let allParticipants = container.querySelectorAll("tr")
-    let formData = new FormData()
     allParticipants.forEach((participant) => {
       let inputBox = participant.querySelector("input")
       if (inputBox.checked) {
+        let formData = new FormData()
         formData.append("intoreId", participant.id)
         formData.append("entityName", intoreRelationVariables.entityName)
         formData.append("entryId", intoreRelationVariables.entryId)
+        console.log(formData.getAll("intoreId","entityName","entryId"))
         server(afterSavingAction, "saveIntoreRelationForm", formData)
         // console.log(participant.classList)
       }
       function afterSavingAction(response) {
+
         if (response[0]) {
           participant.classList.add("table-success")
+          // console.log(participant.id)
         }else{
           participant.classList.add("table-danger")
-          console.log(response)
+          // console.log(response,participant.id)
         }
         inputBox.style.display = "none"
       }
