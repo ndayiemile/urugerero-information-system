@@ -14,16 +14,34 @@ class Home
 
     public function getCellAttendanceProgression(...$arguments)
     {
-        // get the attendance numbers for activities participants
+        // combines the the intore number of intore who attended both sector and cell activities // GROUP BY cells
         $queryString = '
-            SELECT entryId,dueDate as regDate,cell as participant,count(*) as attendees FROM (SELECT entryId, a.dueDate, intoreId FROM intoreRelations i
-            LEFT JOIN activities a
-            ON a.id = i.entryId
-            WHERE i.entityName = "activities") as activitiesData
-            LEFT JOIN intoreIdentities ii
-            ON activitiesData.intoreId = ii.id
-            GROUP BY entryId
-            HAVING dueDate >= :startDate AND dueDate <= :endDate
+        SELECT * FROM (SELECT * FROM (SELECT participant as cell, COUNT(*) as attendees,activities.`dueDate`
+        FROM
+            `intoreRelations`
+            LEFT JOIN activities ON intoreRelations.`entryId` = activities.id
+        WHERE
+            `entityName` = "activities"
+            AND activities.`dueDate` >= :startDate
+            AND activities.`dueDate` <= :endDate
+            AND activities.participant <> "sector"
+        GROUP BY
+            activities.participant, activities.`dueDate`
+        ORDER BY 
+            activities.`dueDate`) as cellActivityAttendees
+        UNION
+        SELECT cell,COUNT(*) as attendees,activities.`dueDate`
+        FROM
+            `intoreRelations`
+            LEFT JOIN activities ON intoreRelations.`entryId` = activities.id
+            LEFT JOIN `intoreIdentities` ON intoreIdentities.id = intoreRelations.`intoreId`
+        WHERE
+            `entityName` = "activities"
+            AND activities.`dueDate` >= :startDate
+            AND activities.`dueDate` <= :endDate
+            AND activities.participant = "sector"
+        GROUP BY cell,activities.`dueDate`) as cellAndSectorActivitiesAttenders
+        ORDER BY cell, `dueDate`        
         ';
         $this->db->query($queryString);
         // bind the values to the query
@@ -31,16 +49,14 @@ class Home
             $this->db->bind(':' . $name, $value);
         }
 
-        // get all the number of members in each participant groups
+        //gets the number of intore in each cell
         $DB2 = new Database;
         $queryString1 = '
-        SELECT count(*) as count,cell as participant FROM `intoreIdentities` GROUP BY cell
-        union
-        select (select count(*) from intoreIdentities where sector = "Kimisagara"),"Sector";
+        SELECT cell, COUNT(*) AS count FROM `intoreIdentities` GROUP BY cell;
         ';
         $DB2->query($queryString1);
 
-        return ["relationsData" => $this->db->resultSet(), "groupData" => $DB2->resultSet()];
+        return ["cellAttendees" => $this->db->resultSet(), "cellMembers" => $DB2->resultSet()];
     }
     public function getSectorDataOverView(...$arguments)
     {

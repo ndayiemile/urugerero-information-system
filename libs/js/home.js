@@ -15,9 +15,13 @@ window.onload = () => {
 function analyticsGraphs() {
   //get the data attendance from server
   let formData = new FormData();
-  formData.append("startDate", "2024-01-22");
-  formData.append("endDate", "2024-01-26");
-  server(prepareAttendanceData, "getCellAttendanceProgression", formData);
+  formData.append("startDate", "2024-01-01");
+  formData.append("endDate", "2024-01-11");
+  server(
+    PrepareCellAttendanceProgression,
+    "getCellAttendanceProgression",
+    formData
+  );
   server(prepareSectorDataOverView, "getSectorDataOverView", formData);
   server(
     prepareSectorAttendanceDataOverView,
@@ -29,54 +33,50 @@ function analyticsGraphs() {
     "getSectorActivitiesDataOverView",
     formData
   );
-  function prepareAttendanceData(response) {
-    let showDataAsPercentages = false;
+  function PrepareCellAttendanceProgression(response) {
+    console.log(response);
+    let showDataAsPercentages = true;
     let seriesData = [];
     let categoriesData = [];
-    let getSeriesNames = (responseData) => {
-      let unique_values = [
-        ...new Set(responseData.map((element) => element.participant)),
-      ];
+    let getAxisData = (responseData) => {
+      let unique_values = {
+        cellNames: [...new Set(responseData.map((element) => element.cell))],
+        attendanceDays: [
+          ...new Set(responseData.map((element) => element.dueDate)),
+        ],
+      };
       return unique_values;
     };
-    let getAttendanceDays = (responseData) => {
-      let unique_values = [
-        ...new Set(responseData.map((element) => element.regDate)),
-      ];
-      return unique_values;
-    };
-    // console.log(response);
-    categoriesData = getAttendanceDays(response.relationsData);
-    let dataSet = getSeriesNames(response.relationsData);
+    let axisData = getAxisData(response.cellAttendees);
+    categoriesData = axisData.attendanceDays;
+    let dataSet = axisData.cellNames;
     for (let i = 0; i < dataSet.length; i++) {
       let series = { name: dataSet[i], data: [] };
-      response.relationsData.forEach((element) => {
-        if (element.participant.toLowerCase() == dataSet[i].toLowerCase()) {
-          //set the name
-          let groupName = element.participant;
-          series.name = groupName;
-          //insert the values per cent
-          let totalNumberOfGroupMembers = Number.parseInt(
-            response.groupData.filter(
-              (item) =>
-                item.participant.toLowerCase() == groupName.toLowerCase()
-            )[0].count
-          );
-          let attendedMembers = element.attendees;
+      let membersInGroup = Number.parseInt(
+        response.cellMembers.find((item) => item.cell == dataSet[i]).count
+      );
+      for (let j = 0; j < categoriesData.length; j++) {
+        let attendance = (series.data[j] = response.cellAttendees.find(
+          (item) => item.dueDate == categoriesData[j] && item.cell == dataSet[i]
+        ));
+        if (attendance != undefined) {
+          attendance = Number.parseInt(attendance.attendees);
           if (showDataAsPercentages) {
-            let percentage = Math.round(
-              (attendedMembers / totalNumberOfGroupMembers) * 100
-            );
-            series.data.push(percentage);
-          } else {
-            series.data.push(element.attendees);
+            attendance = Math.round((attendance / membersInGroup) * 100);
           }
+        } else {
+          attendance = null;
         }
-      });
+        series.data[j] = attendance;
+      }
       seriesData.push(series);
     }
-    renderChartForProjectedAttendanceRate(seriesData, categoriesData);
-    function renderChartForProjectedAttendanceRate(seriesData, categoriesData) {
+    console.log(seriesData, categoriesData);
+    renderChartForcellAttendanceProgression(seriesData, categoriesData);
+    function renderChartForcellAttendanceProgression(
+      seriesData,
+      categoriesData
+    ) {
       // Cell Attendance Progression chart
       let options_chartForProjectedAttendanceRate = {
         series: seriesData,
@@ -337,9 +337,9 @@ function getNumberOfActivitiesAndRegisteredIntore(response) {
   ObjectId("total-number-of-intore").innerText = response.intore;
   ObjectId("total-number-of-activities").innerText = response.activities;
 }
-function getDoneActivities(){
-  let formData = new FormData()
-  server(displayDoneActivities, "getDoneActivities", formData)
+function getDoneActivities() {
+  let formData = new FormData();
+  server(displayDoneActivities, "getDoneActivities", formData);
   function displayDoneActivities(response) {
     console.log(response);
     // debugger;
@@ -349,7 +349,16 @@ function getDoneActivities(){
     // append new children to the container
     response.forEach((dataRow) => {
       let div = document.createElement("div");
-      div.classList.add("card", "timeline-item", "position-relative", "rounded", "mb-2", "border", "shadow","cursor-pointer");
+      div.classList.add(
+        "card",
+        "timeline-item",
+        "position-relative",
+        "rounded",
+        "mb-2",
+        "border",
+        "shadow",
+        "cursor-pointer"
+      );
       let rowContent = `
         <div class="card-header fw-bolder border-0 bg-white p-0 d-flex justify-content-between p-2">
           <span class="gs-fs-8">${dataRow.title}</span>

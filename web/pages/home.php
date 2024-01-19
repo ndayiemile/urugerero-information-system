@@ -438,7 +438,7 @@ include_once('../components/header.php')
     </div>
   </article>
 </section>
-<section class="row gx-3">
+<section class="row gx-3 mt-3">
   <!-- recent attendance rate  -->
   <div class="col-12 col-lg-6">
     <div class="card border-0 shadow-sm">

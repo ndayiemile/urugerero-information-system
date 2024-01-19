@@ -10,4 +10,7 @@ class IntoreIdentities
         $tuples = ["*"];
         return $this->db->selectAnd("intoreIdentities",$tuples,$arguments);
     }
+    public function getIntoreStatus(...$arguments){
+// Sick,Employed,Studying,Active,Inactive
+    }
 }

@@ -121,12 +121,13 @@ class Reports
         }
     }
     public function registerNewIntore(...$arguments)
-    { // saves csv new intore csv file data to the database
+    { 
         $table = "intoreIdentities";
         if (isset($_FILES["recordFile"]["tmp_name"][0])) {
             $additionalDataForEachRow = ["cohortId" => $_SESSION['cohortId']];
             return $this->extractFileToDb(false, $table, $additionalDataForEachRow);
         } else {
+            $arguments["cohortId"] = $_SESSION['cohortId'];
             return $this->insertThenReturnId($table, $arguments);
         }
     }

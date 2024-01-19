@@ -3,14 +3,12 @@ include_once('../components/header.php');
 ?>
 <section class="mt-3">
     <div class="d-flex mb-3 p-2 rounded bg-white fieldsContainer" name="intoreIdentities">
-        <div class="bg-info rounded-start">
-            <img class="profile-picture-img rounded-start fieldName" src="../../depository/profilePictures/9334234.jpg" name="img" alt="intore picture" srcset="" />
-        </div>
-        <div class="w-100 pt-3 px-4 rounded-end">
+        <div class="w-100 py-2 px-4 rounded-end">
+            <h4 class="my-3">Identities</h4>
             <div class="row align-items-baseline">
-                <h3 class="col-8 m-0 fieldName" name="fullName">Ndayishimiye Emile</h3>
+                <h5 class="col-8 m-0 fieldName" name="fullName">Ndayishimiye Emile</h5>
                 <p class="col-4 m-0">
-                    <span class="h6">National ID: </span><spa fieldNamen name="nationalId">1200380194043016</spa>
+                    <span class="h6">National ID: </span><span class="fieldName" name="nationalId">1200380194043016</span>
                 </p>
             </div>
             <div class="row mt-4">

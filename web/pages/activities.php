@@ -30,7 +30,7 @@ include_once('../components/header.php');
                     <option value="mobilisation">mobilisation</option>
                 </select>
                 <!-- number of available records -->
-                <span class="d-none d-md-block me-3 ms-auto"><small>50</small> of <small>100</small></span>
+                <span class="d-md-block me-3 ms-auto invisible"><small>50</small> of <small>100</small></span>
                 <!-- activity due date filters -->
                 <div class="border border-1 bg-white mx-2 text-center rounded-pill px-3">
                     <select name="dueDateOperator" class="sortKey border border-start-0 border-bottom-0 border-top-0 text-center select-arrow-none outline-none pe-1 ps-0 border-1 h-100 bg-transparent">

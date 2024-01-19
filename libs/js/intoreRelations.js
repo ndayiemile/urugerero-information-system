@@ -77,7 +77,7 @@ function displayIntoreIdentities(response) {
         formData.append("intoreId", participant.id)
         formData.append("entityName", intoreRelationVariables.entityName)
         formData.append("entryId", intoreRelationVariables.entryId)
-        console.log(formData.getAll("intoreId","entityName","entryId"))
+        // console.log(formData.getAll("intoreId","entityName","entryId"))
         server(afterSavingAction, "saveIntoreRelationForm", formData)
         // console.log(participant.classList)
       }
