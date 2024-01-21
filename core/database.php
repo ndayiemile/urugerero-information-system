@@ -112,7 +112,7 @@ class Database
     }
 
     // SELECT $tuples FROM $table WHERE (...arguments) = (...arguments)  // SELECT theme_picture_url,templates FROM teachers_settings WHERE tr_id = :tr_id AND student_id = :student_id
-    public function selectAnd(string $table, array $tuples, array $arguments = [])
+    public function selectAnd(string $table, array $tuples, array $arguments = [],$orderBy = "id")
     {
         $whereClause = "WHERE ";
         $resultSetColumns = "";
@@ -131,7 +131,7 @@ class Database
             $whereClause = "";
         }
         // query preparation
-        $queryString = "SELECT " . $resultSetColumns . " FROM " . $table . " " . $whereClause . " ORDER BY id DESC";
+        $queryString = "SELECT " . $resultSetColumns . " FROM " . $table . " " . $whereClause . " ORDER BY $orderBy DESC";
         $queryString = rtrim($queryString);
         //prepare the query
         $this->query($queryString);

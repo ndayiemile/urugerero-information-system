@@ -90,16 +90,86 @@ function analyticsGraphs() {
             tools: {
               download: true,
               selection: true,
-              zoom: true,
+              zoom: false,
               zoomin: true,
               zoomout: true,
               pan: false,
               reset: true | '<img src="/static/icons/reset.png" width="20">',
-              customIcons: [],
+              customIcons: [
+                {
+                  icon: '<img src="../../libs/icons/211751_gear_icon.png" width="20">',
+                  index: 4,
+                  title: "set Graph Start and End Date",
+                  class: "custom-icon",
+                  click: function (chart, options, e) {
+                    let dropDownPrototype = document.createElement("div");
+                    dropDownPrototype.classList.add("settings-icon");
+                    dropDownPrototype.innerHTML = `
+                      <form class="apexcharts-menu-item" action="" method="post">
+                      <p class="gs-fs-8 text-center">Analytics Period</p>
+                      <input type="date" name="startDate" class="border rounded"/>
+                      <input type="date" name="endDate" class="border rounded mt-1"/>
+                      </form>
+                    `;
+                    let chartDiv = document.getElementById(
+                      "chartForProjectedAttendanceRate"
+                    );
+                    // console.log(chartDiv);
+                    let container = chartDiv.querySelector(
+                      ".apexcharts-toolbar"
+                    );
+                    let dropDown = container.querySelector(".settings-icon");
+                    if (!dropDown) {
+                      dropDownPrototype.classList.add(
+                        "apexcharts-menu",
+                        "apexcharts-menu-open"
+                      );
+                      container.appendChild(dropDownPrototype);
+                      dropDownPrototype.onmouseleave = () => {
+                        dropDownPrototype.classList.remove(
+                          "apexcharts-menu-open"
+                        );
+                      };
+                    } else {
+                      if (dropDown.classList.contains("apexcharts-menu-open")) {
+                        dropDown.classList.remove("apexcharts-menu-open");
+                      } else {
+                        dropDown.classList.add("apexcharts-menu-open");
+                      }
+                    }
+                    let form = dropDownPrototype.querySelector("form");
+                    let endDateInput = form.querySelector(
+                      "input[name=endDate]"
+                    );
+                    let startDateInput = form.querySelector(
+                      "input[name=startDate]"
+                    );
+                    endDateInput.addEventListener("change", renderNewGraph);
+                    startDateInput.addEventListener("change", renderNewGraph);
+                    function renderNewGraph() {
+                      if (
+                        startDateInput.value != null &&
+                        endDateInput.value != null &&
+                        startDateInput.value < endDateInput.value
+                      ) {
+                        chartDiv.innerHTML = "";
+                        let formData = new FormData();
+                        formData.append("startDate", startDateInput.value);
+                        formData.append("endDate", endDateInput.value);
+                        server(
+                          PrepareCellAttendanceProgression,
+                          "getCellAttendanceProgression",
+                          formData
+                        );
+                      }
+                    }
+                  },
+                },
+              ],
             },
             export: {
               csv: {
-                filename: undefined,
+                filename: "Cell Attendance Progression",
                 columnDelimiter: ",",
                 headerCategory: "category",
                 headerValue: "value",
@@ -156,6 +226,39 @@ function analyticsGraphs() {
         chart: {
           type: "donut",
           height: 196,
+          toolbar: {
+            show: true,
+            offsetX: 0,
+            offsetY: 0,
+            tools: {
+              download: true,
+              selection: true,
+              zoom: false,
+              zoomin: true,
+              zoomout: true,
+              pan: false,
+              reset: true | '<img src="/static/icons/reset.png" width="20">',
+              customIcons: [],
+            },
+            export: {
+              csv: {
+                filename: "Intore Status",
+                columnDelimiter: ",",
+                headerCategory: "category",
+                headerValue: "value",
+                dateFormatter(timestamp) {
+                  return new Date(timestamp).toDateString();
+                },
+              },
+              svg: {
+                filename: "Intore Status",
+              },
+              png: {
+                filename: "Intore Status",
+              },
+            },
+            autoSelected: "zoom",
+          },
         },
         responsive: [
           {
@@ -227,7 +330,7 @@ function analyticsGraphs() {
       }
     });
     seriesData.push(sectorData);
-    let metricsBaseData = ["0-25", "25-50", "50-75", "75-100"];
+    let metricsBaseData = ["0-25%", "25-50%", "50-75%", "75-100%"];
     renderSectorAttendanceDataOverView(seriesData, metricsBaseData);
     function renderSectorAttendanceDataOverView(seriesData, metricsBaseData) {
       let options_chartForSectorAttendanceDataOverView = {

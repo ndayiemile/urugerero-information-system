@@ -36,7 +36,7 @@ include_once('../components/header.php');
         <span class="me-3 ms-auto invisible"><small>50</small> of <small>100</small></span>
         <button class="btn btn-sm btn-secondary" onclick="printPageArea('intoreIdentities-card')">Print</button>
       </div>
-      <div id="currentStatusSortKeys" name="currentStatusSortKeys" targetField="currentStatus" class="sortKey p-0 bg-light-gray d-flex align-items-center justify-content-between">
+      <div id="currentStatusSortKeys" name="currentStatusSortKeys" targetField="status" class="sortKey p-0 bg-light-gray d-flex align-items-center justify-content-between">
       </div>
       <!-- intore container list-->
       <div class="card-body p-0 mx-3">

@@ -28,7 +28,7 @@ function displayIntoreIdentities(response) {
     <td class="text-secondary">${dataRow.firstTel}</td>
     <td>
       <div class="float-end">
-        <span class="badge bg-primary-subtle">Active</span>
+        <span class="badge ${dataRow.status == 'Active'? 'bg-success' : dataRow.status == 'Inactive'? 'bg-danger' : ["Sick","Employed","Studying"].includes(dataRow.status) ? 'bg-warning' : 'bg-info'} opacity-75">${dataRow.status}</span>
         <div
           class="ms-3 btn-group"
           role="group"
@@ -183,14 +183,14 @@ function prepareSortKeys() {
         sortOptionsSet.forEach((keyValue) => {
           let div = `
             <div class="sortKey cursor-pointer d-flex align-items-center p-3 ${
-              keyValue == "all" ? "focused bg-opacity-25 bg-secondary" : ""
+              keyValue == "All" ? "focused bg-opacity-25 bg-secondary" : ""
             }" name="${
-            keyValue == "all" ? "currentStatusSortKeysValue" : ""
+            keyValue == "All" ? "currentStatusSortKeysValue" : ""
           }" value="${keyValue}">
               <input id="${
-                keyValue == "all" ? "currentStatusSortKeysSelector" : ""
+                keyValue == "All" ? "currentStatusSortKeysSelector" : ""
               }" type="checkbox" class="mt-0 me-2 form-check-input fs-5 rounded-0 ${
-            keyValue != "all" ? "invisible" : "visible"
+            keyValue != "All" ? "invisible" : "visible"
           }" />
               <span class="mx-2 p-0">${keyValue}</span>
               <span class="badge gs-fs-8 text-bg-secondary p-1 bg-opacity-25">0</span>
@@ -287,12 +287,16 @@ function getIntoreCurrentStatusCounts(response) {
   server(displayCurrentStatusCounts, "sortKeys", sortRequestForm)
 
   function displayCurrentStatusCounts(response){
+    console.log(response)
     let countAll = 0;
-    Array.from(response).forEach(stat =>{
-      document.querySelector(`.sortKey[value='${stat.currentStatus}'] .badge`).innerText = parseInt(stat.currentStatusCount)
-      countAll += parseInt(stat.currentStatusCount)
+    document.querySelectorAll(".sortKey .badge").forEach(key =>{
+      key.innerText = 0
     })
-    // total number of records
-    document.querySelector(`.sortKey[value='all'] .badge`).innerText = countAll
+    Array.from(response).forEach(stat =>{
+      document.querySelector(`.sortKey[value='${stat.status}'] .badge`).innerText = parseInt(stat.count)
+      countAll += parseInt(stat.count)
+    })
+    // // total number of records
+    document.querySelector(`.sortKey[value='All'] .badge`).innerText = countAll
   }
 }
