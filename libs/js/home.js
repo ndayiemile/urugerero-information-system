@@ -34,7 +34,7 @@ function analyticsGraphs() {
     formData
   );
   function PrepareCellAttendanceProgression(response) {
-    console.log(response);
+    // console.log(response);
     let showDataAsPercentages = true;
     let seriesData = [];
     let categoriesData = [];
@@ -71,7 +71,7 @@ function analyticsGraphs() {
       }
       seriesData.push(series);
     }
-    console.log(seriesData, categoriesData);
+    // console.log(seriesData, categoriesData);
     renderChartForcellAttendanceProgression(seriesData, categoriesData);
     function renderChartForcellAttendanceProgression(
       seriesData,
@@ -212,11 +212,12 @@ function analyticsGraphs() {
     }
   }
   function prepareSectorDataOverView(response) {
+    // console.log(response)
     let metricsBaseData = [];
     let seriesData = [];
     response.forEach((element) => {
       metricsBaseData.push(element.status);
-      seriesData.push(Number.parseInt(element.counts));
+      seriesData.push(Number.parseInt(element.categoryPercentage));
     });
     renderSectorDataOverView(seriesData, metricsBaseData);
     function renderSectorDataOverView(seriesData, metricsBaseData) {
@@ -283,40 +284,36 @@ function analyticsGraphs() {
     }
   }
   function prepareSectorAttendanceDataOverView(response) {
-    let showDataAsPercentages = false;
+    console.log(response);
     let seriesData = [];
     let getSeriesNames = (responseData) => {
       let unique_values = [
-        ...new Set(
-          responseData.map((element) => element.participant.toLowerCase())
-        ),
+        ...new Set(responseData.map((element) => element.cell.toLowerCase())),
       ];
       return unique_values;
     };
-    let dataSet = getSeriesNames(response.relationsData);
+    let dataSet = getSeriesNames(response);
     for (let i = 0; i < dataSet.length; i++) {
       let series = { name: dataSet[i], data: [0, 0, 0, 0] };
-      response.relationsData.forEach((element) => {
-        if (element.participant.toLowerCase() == series.name.toLowerCase()) {
+      response.forEach((element) => {
+        if (element.cell.toLowerCase() == series.name.toLowerCase()) {
+          let category = element.category;
+          let value = Number.parseInt(element.catCount);
           //set number of category members counter
-          let attendedMembers = Number.parseInt(element.attendance);
-          let totalNumberOfGroupActivities = Number.parseInt(
-            response.groupData.filter(
-              (item) =>
-                item.participant.toLowerCase() == series.name.toLowerCase()
-            )[0].numberOfActivities
-          );
-          let percentage = Math.round(
-            (attendedMembers / totalNumberOfGroupActivities) * 100
-          );
-          if (percentage >= 75) {
-            series.data[3] += 1;
-          } else if (percentage >= 50) {
-            series.data[2] += 1;
-          } else if (percentage >= 25) {
-            series.data[1] += 1;
-          } else {
-            series.data[0] += 1;
+          switch (category) {
+            case "A":
+              series.data[3] = value;
+              break;
+            case "B":
+              series.data[2] = value;
+              break;
+            case "C":
+              series.data[1] = value;
+              break;
+
+            default:
+              series.data[0] = value;
+              break;
           }
         }
       });
@@ -330,6 +327,7 @@ function analyticsGraphs() {
       }
     });
     seriesData.push(sectorData);
+    console.log(seriesData);
     let metricsBaseData = ["0-25%", "25-50%", "50-75%", "75-100%"];
     renderSectorAttendanceDataOverView(seriesData, metricsBaseData);
     function renderSectorAttendanceDataOverView(seriesData, metricsBaseData) {
@@ -372,6 +370,16 @@ function analyticsGraphs() {
             },
           },
         },
+        colors: [
+          "#008FFB",
+          "#00E396",
+          "#FEB019",
+          "#FF4560",
+          "#3F51B5",
+          "#4CAF50",
+          "#F9CE1D",
+          "#D4526E",
+        ],
       };
 
       let chart_chartForSectorAttendanceDataOverView = new ApexCharts(
@@ -444,7 +452,7 @@ function getDoneActivities() {
   let formData = new FormData();
   server(displayDoneActivities, "getDoneActivities", formData);
   function displayDoneActivities(response) {
-    console.log(response);
+    // console.log(response);
     // debugger;
     let container = ObjectId("doneActivities-container");
     //clear the container

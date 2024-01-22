@@ -2,9 +2,139 @@
 class Home
 {
     private $db;
+    private $queryForIntoreId_Status_cell_realAttendance_expectedAttendance_percentageAttendance;
     public function __construct()
     {
         $this->db = new Database;
+        $this->queryForIntoreId_Status_cell_realAttendance_expectedAttendance_percentageAttendance = '
+        SELECT
+            id, status, cell, realAttendance, expectedAttendance, ROUND(
+                (
+                    realAttendance / expectedAttendance
+                ) * 100
+            ) AS percentageAttendance
+        FROM (
+                SELECT
+                    id, status, cell, timesAttended AS realAttendance, total AS expectedAttendance
+                FROM (
+                        SELECT Iit.id, status, cell, IF(
+                                ISNULL(`entryId`), 0, COUNT(*)
+                            ) AS timesAttended
+                        FROM (
+                                SELECT id, status
+                                FROM (
+                                        SELECT id, category AS status, 1 AS priority
+                                        FROM (
+                                                SELECT Iit.id, Iit.cell, Pt.category, Pt.description, Pt.`startDate`, Pt.`endDate`
+                                                FROM
+                                                    `intoreIdentities` Iit
+                                                    INNER JOIN `intoreRelations` Irt ON Iit.`id` = Irt.`intoreId`
+                                                    AND Irt.`entityName` = "permissions"
+                                                    INNER JOIN permissions Pt ON Pt.id = Irt.`entryId`
+                                                WHERE
+                                                    Pt.`startDate` <= CURDATE()
+                                                    AND Pt.`endDate` >= CURDATE()
+                                            ) AS intoreWithPermission
+                                        UNION
+                                        SELECT Iit.id, IF(
+                                                ROUND(
+                                                    (
+                                                        COUNT(*) / (
+                                                            SELECT (
+                                                                    actTotal + (
+                                                                        SELECT COUNT(*)
+                                                                        FROM activities
+                                                                        WHERE
+                                                                            participant = "sector"
+                                                                    )
+                                                                ) AS total
+                                                            FROM (
+                                                                    SELECT *
+                                                                    FROM (
+                                                                            SELECT participant, COUNT(*) AS actTotal
+                                                                            FROM activities
+                                                                            GROUP BY
+                                                                                participant
+                                                                            HAVING
+                                                                                participant <> "sector"
+                                                                        ) AS cellsWithActivities
+                                                                    UNION
+                                                                    SELECT cell, 0 AS COUNT
+                                                                    FROM `intoreIdentities`
+                                                                    WHERE
+                                                                        cell NOT IN(
+                                                                            SELECT DISTINCT
+                                                                                participant
+                                                                            FROM activities
+                                                                        )
+                                                                ) AS allCells
+                                                            WHERE
+                                                                participant = Iit.cell
+                                                        )
+                                                    ) * 100
+                                                ) > 50, "Active", "Inactive"
+                                            ) AS status, 2
+                                        FROM
+                                            `intoreIdentities` Iit
+                                            INNER JOIN `intoreRelations` Irt ON Iit.id = Irt.`intoreId`
+                                        WHERE
+                                            Irt.`entityName` = "activities"
+                                        GROUP BY
+                                            Iit.id
+                                        UNION
+                                        SELECT id, "Inactive", 2
+                                        FROM `intoreIdentities`
+                                        WHERE
+                                            id NOT IN(
+                                                SELECT DISTINCT
+                                                    intoreId
+                                                FROM `intoreRelations`
+                                                WHERE
+                                                    `entityName` = "activities"
+                                            )
+                                    ) AS allIntoreStatus
+                                GROUP BY
+                                    id
+                                ORDER BY id, priority
+                            ) AS intoreWithStatus
+                            INNER JOIN `intoreIdentities` Iit ON Iit.id = intoreWithStatus.id
+                            LEFT JOIN `intoreRelations` Irt ON Iit.id = Irt.`intoreId`
+                            AND Irt.`entityName` = "activities"
+                        GROUP BY
+                            id
+                    ) AS intoreStatusWithCellsAndNumberOfAttendedActivities
+                    LEFT JOIN (
+                        SELECT participant, (
+                                actTotal + (
+                                    SELECT COUNT(*)
+                                    FROM activities
+                                    WHERE
+                                        participant = "sector"
+                                )
+                            ) AS total
+                        FROM (
+                                SELECT *
+                                FROM (
+                                        SELECT participant, COUNT(*) AS actTotal
+                                        FROM activities
+                                        GROUP BY
+                                            participant
+                                        HAVING
+                                            participant <> "sector"
+                                    ) AS cellsWithActivities
+                                UNION
+                                SELECT cell, 0 AS COUNT
+                                FROM `intoreIdentities`
+                                WHERE
+                                    cell NOT IN(
+                                        SELECT DISTINCT
+                                            participant
+                                        FROM activities
+                                    )
+                            ) AS allCells
+                    ) AS activitiesDoneByEachCell ON intoreStatusWithCellsAndNumberOfAttendedActivities.cell = activitiesDoneByEachCell.participant
+            ) AS intoreDataWithRealAndExpectedAttendance
+    ';
     }
     public function getNumberOfActivitiesAndRegisteredIntore(...$arguments)
     {
@@ -60,144 +190,45 @@ class Home
     }
     public function getSectorDataOverView(...$arguments)
     {
-        $queryString = '
-            SELECT p.category as status,
-                COUNT(*) as counts
-            FROM intoreRelations i
-                LEFT JOIN permissions p ON i.entryId = p.id
-            WHERE entityName = "permissions"
-                AND p.startDate >= "2022-01-04"
-                AND p.endDate <= "2024-12-12"
-                AND i.intoreId NOT IN (
-                    SELECT intoreId
-                    from (
-                            SELECT intoreId,
-                                count(*) as timesAttended,
-                                a.participant
-                            FROM intoreRelations i
-                                LEFT JOIN activities a ON i.entryId = a.id
-                            WHERE entityName = "activities"
-                                AND a.dueDate >= "2022-01-04"
-                                AND a.dueDate <= "2024-12-12"
-                            GROUP BY intoreId
-                        ) as activeIntore
-                    WHERE timesAttended > (
-                            SELECT COUNT(*)
-                            FROM activities
-                            WHERE participant = activeIntore.participant
-                                AND dueDate >= "2013-02-02"
-                                AND dueDate <= "2025-12-12"
-                            GROUP by participant
-                        ) / 2
-                )
-            GROUP BY entryId
-            UNION
-            SELECT "active",count(*)
-            from (
-                    SELECT intoreId, count(*) as timesAttended,
-                        a.participant
-                    FROM intoreRelations i
-                        LEFT JOIN activities a ON i.entryId = a.id
-                    WHERE entityName = "activities"
-                        AND a.dueDate >= "2022-01-04"
-                        AND a.dueDate <= "2024-12-12"
-                    GROUP BY intoreId
-                ) as activeIntore
-            WHERE timesAttended > (
-                    SELECT COUNT(*)
-                    FROM activities
-                    WHERE participant = activeIntore.participant
-                        AND dueDate >= "2013-02-02"
-                        AND dueDate <= "2025-12-12"
-                    GROUP by participant
-            )/2
-            UNION
-            SELECT "inactive",(SELECT count(*) FROM intoreIdentities) - (SELECT SUM(counts) FROM (SELECT p.category as status,
-                COUNT(*) as counts
-            FROM intoreRelations i
-                LEFT JOIN permissions p ON i.entryId = p.id
-            WHERE entityName = "permissions"
-                AND p.startDate >= "2022-01-04"
-                AND p.endDate <= "2024-12-12"
-                AND i.intoreId NOT IN (
-                    SELECT intoreId
-                    from (
-                            SELECT intoreId,
-                                count(*) as timesAttended,
-                                a.participant
-                            FROM intoreRelations i
-                                LEFT JOIN activities a ON i.entryId = a.id
-                            WHERE entityName = "activities"
-                                AND a.dueDate >= "2022-01-04"
-                                AND a.dueDate <= "2024-12-12"
-                            GROUP BY intoreId
-                        ) as activeIntore
-                    WHERE timesAttended > (
-                            SELECT COUNT(*)
-                            FROM activities
-                            WHERE participant = activeIntore.participant
-                                AND dueDate >= "2013-02-02"
-                                AND dueDate <= "2025-12-12"
-                            GROUP by participant
-                        ) / 2
-                )
-            GROUP BY entryId
-            UNION
-            SELECT "active",count(*)
-            from (
-                    SELECT intoreId, count(*) as timesAttended,
-                        a.participant
-                    FROM intoreRelations i
-                        LEFT JOIN activities a ON i.entryId = a.id
-                    WHERE entityName = "activities"
-                        AND a.dueDate >= "2022-01-04"
-                        AND a.dueDate <= "2024-12-12"
-                    GROUP BY intoreId
-                ) as activeIntore
-            WHERE timesAttended > (
-                    SELECT COUNT(*)
-                    FROM activities
-                    WHERE participant = activeIntore.participant
-                        AND dueDate >= "2013-02-02"
-                        AND dueDate <= "2025-12-12"
-                    GROUP by participant
-            )/2) as knownData)
-        ';
+        $queryString = "
+        SELECT status,ROUND((count(*) / sector)*100) AS categoryPercentage
+        FROM ($this->queryForIntoreId_Status_cell_realAttendance_expectedAttendance_percentageAttendance) 
+        AS mainDataSet
+        JOIN (SELECT COUNT(*) as sector FROM intoreIdentities) as sectorIntoreCount
+        GROUP BY status
+        ";
         $this->db->query($queryString);
-        return $this->db->resultSet();
+        try {
+            return $this->db->resultSet();
+        } catch (Throwable $e) {
+            array_push($GLOBALS['debugger'], ["message" => $e->getMessage(), "Throwable" => $e, "dbQuery" => $queryString]);
+        }
     }
-
     public function getIntoreAttendanceClassificationByCell(...$arguments)
     {
-        $queryString = '
-            SELECT intoreId,count(intoreId) as attendance,cell as participant FROM intoreIdentities ii
-            LEFT JOIN intoreRelations ir
-            ON ii.id = ir.intoreId
-            WHERE entityName = "activities"
-            GROUP BY id
-        ';
-
+        $queryString = "
+        SELECT cell, 
+            CASE 
+            WHEN percentageAttendance BETWEEN 75 AND 100 THEN 'A'
+            WHEN percentageAttendance BETWEEN 50 AND 74 THEN 'B'
+            WHEN percentageAttendance BETWEEN 25 AND 49 THEN 'C'
+            ELSE 'D'
+            END as category,
+            count(*) AS catCount
+        FROM ($this->queryForIntoreId_Status_cell_realAttendance_expectedAttendance_percentageAttendance) 
+        AS mainDataSet
+        GROUP BY cell,category
+        ";
         $this->db->query($queryString);
-        // get all the number of members in each participant groups
-        $DB2 = new Database;
-        $queryString1 = '
-            SELECT participant,
-                count(*) + (
-                    SELECT count(*)
-                    FROM activities
-                    WHERE participant = "sector"
-                    GROUP BY participant
-                ) AS numberOfActivities
-            FROM activities
-            WHERE participant <> "sector"
-            GROUP BY participant
-        ';
-        $DB2->query($queryString1);
-        return ["relationsData" => $this->db->resultSet(), "groupData" => $DB2->resultSet()];
+        try {
+            return $this->db->resultSet();
+        } catch (Throwable $e) {
+            array_push($GLOBALS['debugger'], ["message" => $e->getMessage(), "Throwable" => $e, "dbQuery" => $queryString]);
+        }
     }
     public function getSectorActivitiesDataOverView(...$arguments)
     {
-        $queryString ='
+        $queryString = '
             SELECT category,count(*) as count FROM activities
             WHERE dueDate >= "2023-10-10" AND dueDate <= "2025-10-10"
             GROUP BY category 
@@ -206,7 +237,8 @@ class Home
         return $this->db->resultSet();
     }
 
-    public function getDoneActivities(...$arguments){
+    public function getDoneActivities(...$arguments)
+    {
         $tuples = ["id,title,dueDate"];
         return $this->db->selectAnd("activities", $tuples, $arguments);
     }
