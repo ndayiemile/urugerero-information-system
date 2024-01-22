@@ -3,13 +3,13 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 19, 2024 at 08:10 PM
+-- Generation Time: Jan 22, 2024 at 08:46 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
-SET time_zone = "+02:00";
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -62,7 +62,11 @@ INSERT INTO `activities` (`id`, `title`, `participant`, `stakeHolders`, `locatio
 (16, 'day 8', 'sector', '', '', '', NULL, 'parade', '2024-01-07 22:00:00'),
 (17, 'day 9', 'Kimisagara', '', '', '', NULL, 'training', '2024-01-08 22:00:00'),
 (18, 'day 10', 'Kamuhoza', '', '', '', NULL, 'training', '2024-01-09 22:00:00'),
-(19, 'day 11', 'Kamuhoza', '', '', '', NULL, 'mobilisation', '2024-01-10 22:00:00');
+(19, 'day 11', 'Kamuhoza', '', '', '', NULL, 'mobilisation', '2024-01-10 22:00:00'),
+(20, 'day 21', 'sector', '', '', '', NULL, 'survey', '2024-01-20 22:00:00'),
+(21, 'day 24', 'sector', '', '', '', NULL, 'physical', '2024-01-23 22:00:00'),
+(22, 'Feb 1', 'Katabaro', 'you', '', '', NULL, 'training', '2024-01-31 22:00:00'),
+(23, 'Day 31', 'Kamuhoza', 'DEO', 'Kimisagara, kwa makuza', 'twubatse amazu 5, imiyoboro n\'ibindi', NULL, 'mobilisation', '2024-02-04 22:00:00');
 
 -- --------------------------------------------------------
 
@@ -99,6 +103,15 @@ CREATE TABLE `honors` (
   `description` varchar(500) NOT NULL,
   `dueDate` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `honors`
+--
+
+INSERT INTO `honors` (`id`, `title`, `participant`, `description`, `dueDate`) VALUES
+(1, 'honor 1', 'Sector', 'wow', '2024-01-30 22:00:00'),
+(2, 'Honor 2', 'Sector', 'honor 3', '2024-01-21 22:00:00'),
+(3, 'Yazinduste kurusha abandi', 'Kamuhoza', 'Niwe wakunze kuzinduka', '2024-01-24 22:00:00');
 
 -- --------------------------------------------------------
 
@@ -151,7 +164,13 @@ INSERT INTO `intoreIdentities` (`cohortId`, `id`, `fullName`, `nationalId`, `gen
 (1, 12, 'l', '', '', '', '', '', '', '', '', '', '', 'Nyarugenge', 'Kimisagara', 'Kimisagara', 'Itetero', '', '', '', '', '', ''),
 (1, 13, 'm', '', '', '', '', '', '', '', '', '', '', 'Nyarugenge', 'Kimisagara', 'Kimisagara', 'Itetero', '', '', '', '', '', ''),
 (1, 14, 'n', '', '', '', '', '', '', '', '', '', '', 'Nyarugenge', 'Kimisagara', 'Kimisagara', 'Itetero', '', '', '', '', '', ''),
-(1, 15, 'o', '', '', '', '', '', '', '', '', '', '', 'Nyarugenge', 'Kimisagara', 'Kimisagara', 'Itetero', '', '', '', '', '', '');
+(1, 15, 'o', '', '', '', '', '', '', '', '', '', '', 'Nyarugenge', 'Kimisagara', 'Kimisagara', 'Itetero', '', '', '', '', '', ''),
+(1, 16, 'p', '', 'sex', 'Nyina', 'se', '', '', '', '', '', '', 'Nyarugenge', 'Kimisagara', 'Kimisagara', 'Isimbi', '', '', '', '', '', ''),
+(1, 17, 'anotherOne', '', '', '', '', '', '', '', '', '', '', 'Nyarugenge', 'Kimisagara', 'Taba', 'sooko', '', '', '', '', '', ''),
+(1, 18, 'selec', '', '', '', '', '', '', '', '', '', '', 'Nyarugenge', 'Kimisagara', 'Bushokoro', 'koba', '', '', '', '', '', ''),
+(1, 19, 'You guys', '0789', 'se', 'nyina', '', '', '', '', '', '', '', 'Nyarugenge', 'Kimisagara', 'Kamuhoza', 'Isimbi', '', '', '', '', '', ''),
+(1, 20, 'god', '34', 'sex', 'nyina', 'se', '', '', '', '', '', '', 'Nyarugenge', 'Kimisagara', 'Busogo', 'Impamvu', '', '', '', '', '', ''),
+(1, 21, 'indi ntore', '', '', '', '', '', '', '', '', '', '', 'Nyarugenge', 'Kimisagara', 'Kamuhoza', 'Isimbi', '', '', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -175,17 +194,27 @@ INSERT INTO `intoreRelations` (`intoreId`, `entityName`, `entryId`, `dueDate`) V
 (1, 'activities', 13, '2024-01-19 13:02:05'),
 (1, 'activities', 18, '2024-01-19 18:53:11'),
 (1, 'activities', 19, '2024-01-19 18:54:00'),
+(1, 'activities', 20, '2024-01-21 04:03:46'),
+(1, 'activities', 21, '2024-01-21 15:18:34'),
+(1, 'activities', 23, '2024-01-22 07:39:16'),
+(1, 'permissions', 5, '2024-01-21 14:06:41'),
 (2, 'activities', 7, '2024-01-19 12:56:53'),
 (2, 'activities', 10, '2024-01-19 12:59:26'),
 (2, 'activities', 13, '2024-01-19 13:02:05'),
 (2, 'activities', 18, '2024-01-19 18:53:11'),
 (2, 'activities', 19, '2024-01-19 18:54:00'),
+(2, 'activities', 21, '2024-01-21 15:18:34'),
+(2, 'permissions', 5, '2024-01-21 14:06:41'),
 (3, 'activities', 4, '2024-01-19 12:55:04'),
 (3, 'activities', 7, '2024-01-19 12:56:53'),
 (3, 'activities', 10, '2024-01-19 12:59:26'),
 (3, 'activities', 13, '2024-01-19 13:02:05'),
 (3, 'activities', 14, '2024-01-19 14:30:32'),
 (3, 'activities', 19, '2024-01-19 18:54:00'),
+(3, 'activities', 20, '2024-01-21 04:03:46'),
+(3, 'activities', 21, '2024-01-21 15:18:34'),
+(3, 'permissions', 4, '2024-01-21 12:48:18'),
+(3, 'permissions', 5, '2024-01-21 14:06:41'),
 (4, 'activities', 1, '2024-01-19 12:53:18'),
 (4, 'activities', 4, '2024-01-19 12:55:04'),
 (4, 'activities', 7, '2024-01-19 12:56:53'),
@@ -194,19 +223,32 @@ INSERT INTO `intoreRelations` (`intoreId`, `entityName`, `entryId`, `dueDate`) V
 (4, 'activities', 14, '2024-01-19 14:30:31'),
 (4, 'activities', 15, '2024-01-19 16:28:47'),
 (4, 'activities', 19, '2024-01-19 18:54:00'),
+(4, 'activities', 21, '2024-01-21 15:18:34'),
+(4, 'activities', 23, '2024-01-22 07:39:16'),
+(4, 'permissions', 2, '2024-01-20 14:11:35'),
+(4, 'permissions', 4, '2024-01-21 12:48:18'),
+(4, 'permissions', 5, '2024-01-21 14:06:41'),
 (5, 'activities', 13, '2024-01-19 13:02:05'),
+(5, 'activities', 20, '2024-01-21 04:03:46'),
+(5, 'activities', 21, '2024-01-21 15:18:34'),
+(5, 'permissions', 4, '2024-01-21 12:48:18'),
 (6, 'activities', 11, '2024-01-19 13:00:12'),
 (6, 'activities', 13, '2024-01-19 13:02:05'),
+(6, 'activities', 21, '2024-01-21 15:18:34'),
+(6, 'activities', 22, '2024-01-21 17:12:30'),
 (7, 'activities', 8, '2024-01-19 12:57:47'),
 (7, 'activities', 11, '2024-01-19 13:00:12'),
 (7, 'activities', 13, '2024-01-19 13:02:05'),
 (7, 'activities', 16, '2024-01-19 16:37:26'),
+(7, 'activities', 20, '2024-01-21 04:03:46'),
+(7, 'activities', 21, '2024-01-21 15:18:34'),
 (8, 'activities', 5, '2024-01-19 12:55:28'),
 (8, 'activities', 8, '2024-01-19 12:57:47'),
 (8, 'activities', 11, '2024-01-19 13:00:12'),
 (8, 'activities', 13, '2024-01-19 13:02:05'),
 (8, 'activities', 14, '2024-01-19 14:30:31'),
 (8, 'activities', 16, '2024-01-19 16:37:26'),
+(8, 'activities', 21, '2024-01-21 15:18:34'),
 (9, 'activities', 2, '2024-01-19 12:53:41'),
 (9, 'activities', 5, '2024-01-19 12:55:28'),
 (9, 'activities', 8, '2024-01-19 12:57:47'),
@@ -214,28 +256,61 @@ INSERT INTO `intoreRelations` (`intoreId`, `entityName`, `entryId`, `dueDate`) V
 (9, 'activities', 13, '2024-01-19 13:02:05'),
 (9, 'activities', 14, '2024-01-19 14:30:31'),
 (9, 'activities', 16, '2024-01-19 16:38:02'),
+(9, 'activities', 20, '2024-01-21 04:03:46'),
+(9, 'activities', 21, '2024-01-21 15:18:34'),
+(9, 'activities', 22, '2024-01-21 17:12:30'),
+(9, 'permissions', 1, '2024-01-20 14:10:19'),
 (10, 'activities', 13, '2024-01-19 13:02:05'),
 (10, 'activities', 17, '2024-01-19 16:42:17'),
+(10, 'activities', 21, '2024-01-21 15:18:34'),
+(10, 'permissions', 4, '2024-01-21 12:48:05'),
 (11, 'activities', 13, '2024-01-19 13:02:04'),
 (11, 'activities', 16, '2024-01-19 16:38:09'),
 (11, 'activities', 17, '2024-01-19 16:42:17'),
+(11, 'activities', 20, '2024-01-21 04:03:46'),
+(11, 'activities', 21, '2024-01-21 15:18:33'),
+(11, 'permissions', 4, '2024-01-21 12:48:05'),
 (12, 'activities', 12, '2024-01-19 13:00:53'),
 (12, 'activities', 13, '2024-01-19 13:02:04'),
+(12, 'activities', 20, '2024-01-21 04:03:46'),
+(12, 'activities', 21, '2024-01-21 15:18:33'),
+(12, 'permissions', 4, '2024-01-21 12:48:05'),
 (13, 'activities', 9, '2024-01-19 12:58:35'),
 (13, 'activities', 12, '2024-01-19 13:00:53'),
 (13, 'activities', 13, '2024-01-19 13:02:04'),
+(13, 'activities', 21, '2024-01-21 15:18:33'),
+(13, 'permissions', 4, '2024-01-21 12:48:05'),
 (14, 'activities', 6, '2024-01-19 12:55:52'),
 (14, 'activities', 9, '2024-01-19 12:58:35'),
 (14, 'activities', 12, '2024-01-19 13:00:53'),
 (14, 'activities', 13, '2024-01-19 13:02:04'),
 (14, 'activities', 14, '2024-01-19 14:30:31'),
+(14, 'activities', 20, '2024-01-21 04:03:46'),
+(14, 'activities', 21, '2024-01-21 15:18:33'),
 (15, 'activities', 3, '2024-01-19 12:54:03'),
 (15, 'activities', 6, '2024-01-19 12:55:52'),
 (15, 'activities', 9, '2024-01-19 12:58:35'),
 (15, 'activities', 12, '2024-01-19 13:00:53'),
 (15, 'activities', 13, '2024-01-19 13:02:04'),
 (15, 'activities', 14, '2024-01-19 14:30:31'),
-(15, 'activities', 17, '2024-01-19 16:42:17');
+(15, 'activities', 17, '2024-01-19 16:42:17'),
+(15, 'activities', 21, '2024-01-21 15:18:33'),
+(15, 'honors', 1, '2024-01-20 11:23:36'),
+(15, 'honors', 2, '2024-01-20 11:24:52'),
+(15, 'misconducts', 1, '2024-01-20 11:26:06'),
+(15, 'permissions', 1, '2024-01-20 14:10:19'),
+(15, 'responsibilities', 1, '2024-01-20 08:49:24'),
+(15, 'responsibilities', 2, '2024-01-20 08:50:30'),
+(16, 'activities', 21, '2024-01-21 15:18:33'),
+(17, 'activities', 20, '2024-01-21 04:03:46'),
+(17, 'activities', 21, '2024-01-21 15:18:33'),
+(18, 'activities', 20, '2024-01-21 04:03:46'),
+(18, 'activities', 21, '2024-01-21 15:18:33'),
+(19, 'activities', 23, '2024-01-22 07:39:34'),
+(21, 'activities', 23, '2024-01-22 07:39:02'),
+(21, 'honors', 3, '2024-01-22 07:35:03'),
+(21, 'permissions', 6, '2024-01-22 07:32:53'),
+(21, 'responsibilities', 3, '2024-01-22 07:36:38');
 
 -- --------------------------------------------------------
 
@@ -250,6 +325,13 @@ CREATE TABLE `misconducts` (
   `description` varchar(500) NOT NULL,
   `dueDate` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `misconducts`
+--
+
+INSERT INTO `misconducts` (`id`, `title`, `participant`, `description`, `dueDate`) VALUES
+(1, 'misconduct1', 'Sector', 'oh no', '2024-02-06 22:00:00');
 
 -- --------------------------------------------------------
 
@@ -266,6 +348,18 @@ CREATE TABLE `permissions` (
   `endDate` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `permissions`
+--
+
+INSERT INTO `permissions` (`id`, `category`, `participant`, `description`, `startDate`, `endDate`) VALUES
+(1, 'Sick', 'sector', '', '2024-01-02 22:00:00', '2024-01-04 22:00:00'),
+(2, 'Studying', 'Kamuhoza', '', '2024-01-02 22:00:00', '2024-01-04 22:00:00'),
+(3, 'Sick', 'sector', '', '2024-01-13 22:00:00', '2024-01-30 22:00:00'),
+(4, 'Sick', 'sector', 'wow', '2024-01-17 22:00:00', '2024-01-24 22:00:00'),
+(5, 'Employed', 'Kamuhoza', 'sds', '2024-01-18 22:00:00', '2024-01-23 22:00:00'),
+(6, 'Studying', 'sector', 'at Gs Kimmi', '2024-01-13 22:00:00', '2024-02-09 22:00:00');
+
 -- --------------------------------------------------------
 
 --
@@ -280,6 +374,15 @@ CREATE TABLE `responsibilities` (
   `startDate` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `endDate` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `responsibilities`
+--
+
+INSERT INTO `responsibilities` (`id`, `title`, `participant`, `description`, `startDate`, `endDate`) VALUES
+(1, 'Intore Gitifu', 'Sector', 'she is so cool', '2023-12-31 22:00:00', '2024-01-05 22:00:00'),
+(2, 'umuhuza ', 'Sector', 'next responsibilities', '2024-01-06 22:00:00', '2024-01-10 22:00:00'),
+(3, 'Team B kamuhoza coordinator', 'Sector', 'assigned by Umutoza', '2024-01-06 22:00:00', '2024-01-25 22:00:00');
 
 -- --------------------------------------------------------
 
@@ -391,7 +494,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `activities`
 --
 ALTER TABLE `activities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `cohorts`
@@ -403,31 +506,31 @@ ALTER TABLE `cohorts`
 -- AUTO_INCREMENT for table `honors`
 --
 ALTER TABLE `honors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `intoreIdentities`
 --
 ALTER TABLE `intoreIdentities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `misconducts`
 --
 ALTER TABLE `misconducts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `responsibilities`
 --
 ALTER TABLE `responsibilities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `users`
