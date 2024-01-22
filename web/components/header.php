@@ -38,10 +38,10 @@ $userIdentities = $app->models["globalModel"]->getUserIdentities();
       <!-- navbar buttons  -->
       <div class="container pt-2 position-relative">
         <!-- sideNavbarButton -->
-        <a href="home.php" class="btn mt-3 side-navbar-button current-page-button d-flex p-0 rounded">
+        <a href="home.php" class="btn mt-3 side-navbar-button d-flex p-0 rounded" id="link-to-home">
           <div class="col-12">
             <div class="d-flex align-items-center">
-              <div class="p-2 rounded">
+              <div class="p-2 rounded shadow">
                 <span class="navbar-icon">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-speedometer" viewBox="0 0 16 16">
                     <path d="M8 2a.5.5 0 0 1 .5.5V4a.5.5 0 0 1-1 0V2.5A.5.5 0 0 1 8 2zM3.732 3.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707zM2 8a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 8zm9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5zm.754-4.246a.389.389 0 0 0-.527-.02L7.547 7.31A.91.91 0 1 0 8.85 8.569l3.434-4.297a.389.389 0 0 0-.029-.518z" />
@@ -55,7 +55,7 @@ $userIdentities = $app->models["globalModel"]->getUserIdentities();
         </a>
 
         <!-- sideNavbarButton -->
-        <a href="activities.php" class="btn mt-3 side-navbar-button d-flex p-0 rounded">
+        <a href="activities.php" class="btn mt-3 side-navbar-button d-flex p-0 rounded" id="link-to-activities">
           <div class="col-12">
             <div class="d-flex align-items-center">
               <div class="p-2 rounded shadow">
@@ -71,7 +71,7 @@ $userIdentities = $app->models["globalModel"]->getUserIdentities();
         </a>
 
         <!-- sideNavbarButton -->
-        <a href="intore.php" class="btn mt-3 side-navbar-button d-flex p-0 rounded">
+        <a href="intore.php" class="btn mt-3 side-navbar-button d-flex p-0 rounded" id="link-to-intore">
           <div class="col-12">
             <div class="d-flex align-items-center">
               <div class="p-2 rounded shadow">
@@ -87,7 +87,7 @@ $userIdentities = $app->models["globalModel"]->getUserIdentities();
         </a>
 
         <!-- sideNavbarButton -->
-        <a href="calendar.php" class="btn mt-3 side-navbar-button d-flex p-0 rounded">
+        <a href="calendar.php" class="btn mt-3 side-navbar-button d-flex p-0 rounded" id="link-to-calendar">
           <div class="col-12">
             <div class="d-flex align-items-center">
               <div class="p-2 rounded shadow">
@@ -103,7 +103,7 @@ $userIdentities = $app->models["globalModel"]->getUserIdentities();
         </a>
 
         <!-- sideNavbarButton -->
-        <a href="reports.php" class="btn mt-3 side-navbar-button d-flex p-0 rounded">
+        <a href="reports.php" class="btn mt-3 side-navbar-button d-flex p-0 rounded" id="link-to-reports">
           <div class="col-12">
             <div class="d-flex align-items-center">
               <div class="p-2 rounded shadow">
@@ -119,7 +119,7 @@ $userIdentities = $app->models["globalModel"]->getUserIdentities();
         </a>
 
         <!-- sideNavbarButton -->
-        <a href="settings.php" class="btn mt-3 side-navbar-button d-flex p-0 rounded">
+        <a href="settings.php" class="btn mt-3 side-navbar-button d-flex p-0 rounded" id="link-to-settings">
           <div class="col-12">
             <div class="d-flex align-items-center">
               <div class="p-2 rounded shadow">

@@ -46,4 +46,13 @@ function styleTopNav() {
     }
   };
 }
-styleTopNav();
+function styleSideNav(){
+  let sideNavLink = document.getElementById(`link-to-${PAGENAME}`)
+  if(sideNavLink){
+    sideNavLink.classList.add("current-page-button")
+    let icon = sideNavLink.getElementsByClassName("navbar-icon")[0]
+    icon.parentNode.classList.remove("shadow")
+  }
+}
+styleTopNav(); 
+styleSideNav();

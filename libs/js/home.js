@@ -284,7 +284,7 @@ function analyticsGraphs() {
     }
   }
   function prepareSectorAttendanceDataOverView(response) {
-    console.log(response);
+    // console.log(response);
     let seriesData = [];
     let getSeriesNames = (responseData) => {
       let unique_values = [
@@ -327,7 +327,7 @@ function analyticsGraphs() {
       }
     });
     seriesData.push(sectorData);
-    console.log(seriesData);
+    // console.log(seriesData);
     let metricsBaseData = ["0-25%", "25-50%", "50-75%", "75-100%"];
     renderSectorAttendanceDataOverView(seriesData, metricsBaseData);
     function renderSectorAttendanceDataOverView(seriesData, metricsBaseData) {

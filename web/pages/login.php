@@ -44,7 +44,7 @@
                     <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
                   </svg>
                 </span>
-                <input type="text" name="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon2" />
+                <input type="password" name="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon2" />
               </div>
               <button type="submit" class="btn btn-primary py-2 rounded-pill form-control" serverTargetFunction="userLogin">
                 Login
